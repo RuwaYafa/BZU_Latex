@@ -1,0 +1,171 @@
+% Chapter Template
+% !Tex root = main.tex
+
+% Chapter 2
+
+\chapter{Background and Related Work}
+\label{Chapter2}
+\Quote{In this section you need to explain all the theory required to understand your dissertation (i.e.\ the following chapters). In this section you need to explain all the theory required to understand your dissertation (i.e.\ the following chapters). In this section you need to explain all the theory required to understand your dissertation (i.e.\ the following chapters). In this section you need to explain all the theory required to understand your dissertation (i.e.\ the following chapters).}
+
+
+
+This chapter presents an extended analysis of the goals of this thesis and the motivation driving this endeavor. We investigate and specify several
+challenges in ontology engineering. Section 2.1 discusses the significance,
+and challenges of ontology reusability. In section 2.2, we introduce and
+discuss the most challenging issue in ontology engineering: the
+application-independence of ontologies. In section 2.3, we clarify some
+ontology evolution challenges. To end, section 2.4 draws some
+conclusions and derives the main ontology engineering requirements. 
+
+\section{Background}
+\subsection{The Android Operating System}
+Android is an open-source operating system proposed by Google that is based on a modified version of Linux. Android applications are built with Java, Kotlin, or other cross-platform frameworks. Finally, the applications are compiled in Java, but the original libraries are written in C/C++ \cite{AcharyaRB22}. 
+
+The Android architecture is divided into four layers, as shown in the figure \ref{SampleData}. The first layer is the Android user applications that include the native Android application and the third-party application. In this layer, the user can install and interact with applications. 
+
+\begin{figure}[H]
+\centerline{\includegraphics[scale=0.40]{Images/AndroidArch.png}}
+\caption{Android architecture}
+\label{SampleData}
+\end{figure} 
+
+The application framework contains a set of components that can be reused to provide a service using an API. The \textbf{Notification manager} is a service used by all Android applications to display the custom message display in the status bar. The \textbf{Resource manager} provides access to non-code resources such as color settings, layout files, strings, and user interface layouts~\cite{Platform37:online}. The \textbf{Content providers} are used to share data between applications. The \textbf{ Activity manager} is used to manage all activities of an application and to record the activities in a log file to help debug the app if it crashes~\cite{AcharyaRB22}. The \textbf{View system} service is an extensible set of views that can be used to build an application user interface. The \textbf{Location manager} is used to give access to the location of the device. The \textbf{window manager} is a service responsible for controlling the ordered list of windows, which windows are visible, and how they appear on the screen. Finally, the \textbf{package manager} provides version information on the Java package implementation and specification. The package manager is stored in the manifest file, which is distributed with the classes. 
+
+The libraries layer includes Java libraries that are specific to Android development. The following are some of the core Android libraries:
+
+
+
+\begin{itemize}
+    \item \textbf{App:} It is the foundation of all Android apps and gives access to the application model. 
+    
+    \item \textbf{SSL:} Secure Sockets Layer functionality that leverages a combination of Java Cryptography Architecture (JCA) and the Android framework's TLS (Transport Layer Security) implementation for secure communication protocols.
+
+    \item \textbf{Content:} Enable access to content data between applications and app components.
+       
+     \item \textbf{Media Framework:} provides functionalities for working with multimedia content like audio, video, and images.
+       
+    \item \textbf{Webkit:} Provide a set of classes to make it possible for applications to include web browsing functionality.
+       
+     \item \textbf{Security:} This library collection within AndroidX offers various security-related functionalities like secure networking and data encryption.
+\end{itemize}
+
+The last layer is the Linux Kernel which is considered a core of the Android architecture. It interacts with device drivers and manages all the available drivers such as camera drivers, wireless drivers, audio drivers, memory drivers, etc. These drivers are required during runtime. The Linux Kernel provides an abstraction layer between the device hardware and the other components of Android architecture.
+
+\subsection{Android Package Kit (APK)}
+The Android Package Kit (APK) is an archive file format for applications that work on the Android operating system. The APK file can be installed from the official Android market or from a third-party site. If an Android user wishes to install APK files from a source other than the official app store, they can grant permission on their device to install apps from unknown sources. 
+The main components of the APK file are as follows:
+\begin{itemize}
+    \item \textbf{AndroidManifest.xml:} It contains XML metadata information about components of the application, such as security permissions, activities, and services.
+    
+    \item \textbf{Classes.dex:} This file contains the source code of an application written in Java and compiled to a Dalvik executable with \textit{.edx} extension.
+    
+    \item \textbf{Resources.arsc:} A binary XML file that includes precompiled application resources~\cite{Ali19}.
+    
+    \item \textbf{Resources (res/):} A folder containing none-compiled resources that the application requires at run time, such as menus, images, layouts, and database use.
+    
+    \item \textbf{Assets (assets/):} optional folder containing application assets that Asset Manager can retrieve.
+    
+    \item \textbf{Libraries (lib/):} optional folder containing code compiled that is particular to various processors, such as arm and x86 \cite{Ali19}.
+    
+    \item \textbf{META-INF:} folder containing the MANIFEST.MF file. Additionally, it includes the application developer's signature. The signature can be used to authenticate an external developer.
+\end{itemize}
+
+\subsection{Android Application Components}
+The Android platform provides two types of components that can be used in Android applications: main components and additional components. The main components contain five different types of component~\cite{CompApplicat75:online, AcharyaRB22}
+
+\begin{itemize}
+    \item \textbf{Intent:} It is a messaging component to send messages between other components of the app ~\cite{AcharyaRB22}. Two types of intents: implicit and explicit. Implicit intent is used to interact with other applications, while explicit intent passes the message between the same application components.
+        
+    \item  \textbf{Activities:} 
+    Activities are single screens with a user interface. The Android app starts at the main activity defined in AndroidManifest.xml, then the app can open additional activities. 
+       
+     \item \textbf{Services:} They deal with the background processing of an application. For example, a service might play music in the background. 
+       
+    \item  \textbf{Broadcast receivers:} Respond to broadcast messages coming from external applications or system applications. For example, the application can notify other applications that newly downloaded data are available for use.
+       
+      \item \textbf{Content providers:} Manages shared data that can be stored in the database, file system, on the Web, or any other constant storage location that the application can access. 
+\end{itemize}
+
+
+\subsection{Android Security}
+Android being an open source platform, this makes it a target for hackers. Therefore, the security of applications is a significant concern and a challenge. Android provides two levels of security: at the Linux kernel level and at the application level~\cite{VishnoiMNP21}. The security mechanisms of Android include the following features:
+
+
+\begin{itemize}
+    \item \textbf{Sandbox:} Each application is assigned a unique user ID (UID) and runs in its own process and isolates space. Thus, one application with its own UID did not allow it to be accessed or modified by another application. Additionally, the application running in its own sandbox has limited access to system resources. 
+    
+    \item \textbf{Permissions:} Any application must define the permission needs of other application components or Android resources in the AndroidManifest.xml file. The user must grant these permissions during app installation; otherwise, the application cannot be installed on the device. Moreover, the permission can be granted when the application is run and requested in runtime, which is called dynamic permissions.
+    
+     \item \textbf{Signatures:} The Android application must be stamped and digitally signed with a certificate that identifies the developer of the application. A developer with the same certificate can update the application in the future. Also, the applications with this signature can trust each other by sharing UID between them.
+     
+     \item \textbf{Secure Inter-process Communication:} Secure Inter-process Communication (IPC) protocols allow an application to communicate with remote servers and also other applications.
+\end{itemize}
+
+\subsection{Mobile Malware Overview}
+The term malware is derived from \textbf{mal}icious soft\textbf{ware}. Mobile malware is "gaining access to a device for the purpose of stealing data, damaging the device, or annoying the user, etc" \cite{FeltFCHW11}. In the context of mobile, malware apps can be installed from official stores, third parties, or use social engineering strategies\cite{Alzubaidi21}, in order to gain unauthorized access and use root privileges without the user's permission \cite{FeltFCHW11}. Attackers scan to find vulnerabilities in the Android system to exploit them and infect mobile devices with malware.
+
+The popular types of mobile malware in the literature~\cite{QamarKC19} include the following types, which we describe in more detail for completeness.
+
+\BfPara{Viruses} A virus is a piece of software that can replicate itself and propagate to different programs on a device~\cite{QamarKC19}. Viruses attach themselves as a piece of executable code in the application, and they need human interaction to run. Viruses are capable of stealing data, damaging host systems and networks, building botnets, stealing money, and displaying ads~\cite{CommonMa64:online}. An example of an Android virus is a Gazon attack that sends an SMS link to the mobile and shows as an app that gives Amazon rewards and vouchers worth up to \$200 ~\cite{GazonAndroidS7:online}  
+    
+\BfPara{Rootkits} A type of malware that obtains remote access and control of a device to exploit users. A rootkit uses an obfuscation technique to hide its presence in order to remain in the system for a longer time. The HummingBird is a complex mobile malware application that tries to steal credentials and generate fake advertisements~\cite{1NewMess66:online}.
+
+\BfPara{Worms} It is a standalone malicious software with replication capability spread over the network and from device to device without user intervention. The worm may contain \textit{"Payload"} that is used to describe what the worm is prepared to do on the victim's device, such as damage user data and theft of confidential information. 
+    
+\BfPara{Trojans} This type of malware appears as a benign application, and the user is attracted to downloading and installing the malware through this application~\cite{QamarKC19}. The attacker can gain remote access to the device and steal information and data and delete or modify files. GnatSpy~\cite{NewGnatS80:online} is an example of the mobile Trojan malware family.
+    
+\BfPara{Spyware} The aim of this malware is to monitor the activities of users without their permission. These activities include screen watching, key logging, and stealing information from credential accounts. Spyware attaches itself to benign applications to exploit vulnerabilities. Acallno and FlaxiSpy are types of mobile spyware~\cite{QamarKC19}.
+    
+\BfPara{Botnets} It is an abbreviation for Robot Network, which is a collection of malware-infected devices connected to the Internet. The Botnet builds a large controlled network of devices that can be used for a variety of cybercriminal activities. These devices can be accessed and controlled by a botmaster that is installed on the attacked server as part of the infected network. With the help of the botmaster, the attacker can install new malware on the victim device without the user's acceptance~\cite{HijawiAAHF21}.
+    
+\BfPara{Adware} This malware is designed to send advertisements to users spontaneously. Adware commonly shows ads as pop-up ads. Adware infiltrates the device by clicking ads. Then the adware can install malicious software to steal the user's information or track him.
+    
+\BfPara{Ransomware} This type of malware encrypts all data, locks the device, and displays messages to force users to pay. The attacker then sends the decryption key to victims to restore their own data. Lockdroid, Xbot, Simplocker, and adult player are examples of Android ransomware \footnote{https://themerkle.com/top-4-types-of-android-ransomware/}.
+      
+\BfPara{Backdoor} A type of malware that is designed to open a network door to allow other malware to enter the device. Recently, xHelper has become an ``unkillable'' Android backdoor that forces Android users to reset their mobiles to remove this malware \footnote{https://arstechnica.com/information-technology/2020/04/solved-how-android-backdoor-called-xhelper-survives-factory-resets/}.
+       
+\BfPara{Key-logger} The key-logger malware records everything the user types on the mobile. EventBot is a new type of Android banking malware that exploits accessibility features to steal sensitive data from financial applications, such as SMS two-factor authentication codes\footnote{https://thehackernews.com/2020/04/android-banking-keylogger.html}.
+
+
+ \subsection{Android Platform Security Threats}
+Attackers can exploit vulnerabilities in the Android system to infect mobile devices with malware. Bhat \etal provides a comprehensive analysis of various threats in the Android ecosystem. The study classifies threats into four types, including attacks on the hardware level, kernel-based, hardware abstraction layer-based, and applications-based level~\cite{BhatD19}. Android applications use the API to communicate between these layers, and attackers can penetrate Android at each level.
+
+Karbab \etal presented a summary of threats to Android applications that include a limitation on mobile apps to check whether the applications deployed are malware or not. The official Android application market, such as Google's Play Store, could contain malware applications ~\cite{KarbabDDM21}. Furthermore, the Android app can be installed from external sources, such as SD cards, which some consider as an entry point for malware. Moreover, before installing applications, only 0.17 percent of Android users understand the permissions policies~\cite{KarbabDDM21}. Additionally, developers request permission to use the apps more than the apps need. It is relatively easy to repackage the APK file after reverse engineering a benign app and injecting it with malicious code ~\cite{KarbabDDM21}.
+
+\subsection{Concept Drift}
+The phenomenon of concept drift was first proposed in 1986 by Schlemmer \etal~\cite{SchlimmerG86}. It refers to the unexpected change in the statistical properties or defining features of the target variable over time in non-stationary data distributions. This presents a significant challenge for machine learning models that assume stationary input data distributions, where training and testing data are expected to be very similar~\cite{XiangZCW23}. In real-world scenarios, such as malware detection domain, the evolving nature of data can lead to concept drift, which impacts the accuracy and effectiveness of the model over time. Concept drift can arise in multiple situations, including changes in feature distributions. 
+
+\BfPara{Concept Drift Root Causes} Three causes of concept drift proposed by Xiang \etal~\cite{XiangZCW23} based on the joint probability distribution included the following. 
+
+\begin{itemize}
+    \item Virtual concept drift: In situations where the probability of $x$ changes, while the probability of $y$ given $x$ remains unchanged, as shown in the equation~\ref{VirtualEquation}. In this case, the decision boundary remains unaffected, and only the feature space changes. In the malware context, this cause occurs when the malware evolves and the adversaries change the code of the app (static features) or behavior (dynamic features). But the malware still belongs to the same type and family.
+    
+    \begin{equation}
+    \label{VirtualEquation}
+P_{t0}(x) \neq P_{t1}(x) \quad \text{and} \quad P_{t0}(y|x) = P_{t1}(y|x)
+\end{equation}
+
+
+    \item Real concept drift: When the probability of
+$y$ given $x$ changes while the probability of $x$ remains constant. This cause can be expressed using the equation~\ref{RealEquation}. This scenario directly affects the machine learning model, changing both the feature space and the decision boundary; for example, the emergence of a new malware family.
+
+ \begin{equation}
+    \label{RealEquation}
+P_{t0}(y|x) \neq P_{t1}(y|x) \quad \text{and} \quad P_{t0}(x) = P_{t1}(x)
+\end{equation}
+
+
+    \item Hybrid concept drift: The last reason can lead to concept drift, which is both virtual and real concept drift and can exist in the data stream simultaneously.
+     \begin{equation}
+    \label{HybEquation}
+P_{t0}(x) \neq P_{t1}(x), \quad P_{t0}(y|x) \neq P_{t1}(y|x)
+\end{equation}
+
+    
+\end{itemize}
+
+
+\BfPara{Concept Drift Types} Concept drift can take different shapes over time: abrupt, incremental, gradual, and recurring drift~\cite{XiangZCW23}. Each type represents a different shape of change in the fundamental concept of the data stream. Abrupt drift denotes sudden shifts from one concept to another in a short timeframe. However, incremental drift is similar but slow, and there are continuous shifts between concepts. Gradual drift presents periodic shifts between concepts. The last type is recurring drift, which includes the periodic reappearance of previous concepts over time~\cite{XiangZCW23}.
+
+%https://www.mdpi.com/2076-3417/13/11/6515 
+

@@ -1,0 +1,238 @@
+% Chapter Template
+% !Tex root = main.tex
+
+% Chapter 1
+
+\chapter{Introduction} % Main chapter title
+\Quote{“The knowledge of anything, since all things have causes, is not acquired or complete unless it is known by its causes”.
+\\
+-Avicenna (Ibn Sina)}
+
+
+The primary objective of this dissertation is to advance the field of science by developing innovative methods for extracting relationships from Arabic text. In Section \ref{}, we present the scope and motivation behind this research. Section \ref{} summarizes the research problem and questions, while Section \ref{} highlights our contributions and progress. Finally, the overall structure of the dissertation is presented in Section \ref{}.
+
+
+\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1} 
+
+%----------------------------------------------------------------------------------------
+
+% Define some commands to keep the formatting separated from the content 
+\newcommand{\keyword}[1]{\textbf{#1}}
+\newcommand{\tabhead}[1]{\textbf{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{\bfseries#1}}
+\newcommand{\option}[1]{\texttt{\itshape#1}}
+
+%------------------------------------------------------------------------
+
+
+
+\section{Motivation and Scope}
+\label{sec:scope_motivation}
+
+
+Relation Extraction is a fundamental task in Natural Language Processing (NLP) aimed at identifying and classifying the relationships between entities in a text. This process involves extracting pairs of entities along with the relationships that connect them, typically represented as triplets $\langle \text{subject}, \text{relation}, \text{object} \rangle$ \cite{}. These triplets capture the semantic connections and interactions between the entities~\cite{}. Relation extraction is essential in a variety of applications, such as knowledge graph construction, where it helps create structured and queryable information representations ~\cite{}. It also plays a critical role in event detection by identifying event arguments and roles to describe the events in a text \cite{}. Furthermore, relation extraction enhances the performance of question-answering systems by linking entities in queries to relevant answer entities, thus improving the accuracy of fact-based responses~\cite{}.
+
+Relation extraction can be performed at both the sentence level and the document level \cite{}. In sentence-level relation extraction, the target entities are within the same sentence (Figure \ref{fig:sentence_level}). In contrast, document-level relation extraction (Figure \ref{fig:document_level}) involves entities that span multiple sentences, making the extraction process more challenging. This is due to the need to reason over longer contexts and resolve entity co-references. 
+
+% write a para about the state of the art in general and for Arabic. 
+
+% The gaps in general 
+
+% Scope:
+% within sentence level or document level?  = sentence
+% MSA and dialects? = MSA
+% named entities and relations together or not?  = joint
+% which type of relations? and how many relations? and how many entity types? = fine-grain with almost all common relations.
+
+
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{Images/sentence_level_smilar.pdf}
+  \caption[Sentence-level relation extraction]{Sentence-level relation extraction example, with three entities: "Rebecca Storm", "West Yorkshire", and "England", and two distinct relations: "Has-Birthplace" and "Located-in".}
+  \label{fig:sentence_level}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\linewidth]{Images/document_level_1.pdf}
+  \caption[Document-Level Relation Extraction]{Document-level relation extraction example, with three entities: Ahmed, Amazon, and Seattle, Washington. Ahmed is mentioned twice, denoted as "Ahmed" and "He", indicating coreference.}
+  \label{fig:document_level}
+\end{figure}
+
+
+Deep learning has become the dominant paradigm in relation extraction, particularly for processing large-scale corpora. Early methods focused on training models such as Recurrent Neural Networks (RNNs) \cite{} and Long Short-Term Memory (LSTM) networks \cite{}, or fine-tuning small language models like Bidirectional Encoder Representations from Transformers (BERT) on specific domain datasets \cite{}. While small language models demonstrated promising performance at the sentence level, their effectiveness diminished at the document level or when applied to out-of-domain datasets \cite{}. This limitation is largely due to the restricted knowledge embedded in small language models during pretraining, which hinders their ability to generalize beyond the training data. Chapter \ref{} will provide a detailed analysis of this issue and its impact on relation extraction performance.
+
+In contrast, Graph Neural Networks (GNNs) have emerged as a powerful alternative, which demonstrates superior performance at the document level \cite{}. By incorporating graph structures, such as dependency and syntactic trees, GNNs capture complex relationships between words and entities within a text, providing richer contextual representations. This capability is especially valuable in relation extraction tasks, where the intricate relationships between entities require effective modeling of pairwise connections.
+
+The introduction of Large Language Models (LLMs), such as OpenAI's GPT-4 \cite{} and Meta's LLaMA 3.3 \cite{}, has further advanced the relation extraction paradigm by shifting the focus from fine-tuning to in-context learning. LLMs exploit the extensive knowledge encoded during pre-training on large-scale, diverse datasets, which span a wide array of domains and tasks \cite{}. This enables LLMs to effectively tackle challenges such as the scarcity of annotated datasets, and poor performance on out-of-domain data.
+
+Recent advancements have demonstrated the potential of LLMs in zero-shot and few-shot relation extraction settings, where they identify relationships between entities in a text without requiring extensive data annotation \cite{}. Current methods often reformulate the relation extraction task as a Question-answering problem \cite{}, converting sentences into queries and candidate relations into options. Techniques such as self-consistency within question-answering frameworks have been applied to improve prediction reliability by reducing uncertainty through majority voting. Strategies like task-aware demonstration retrieval, gold label-induced reasoning logic, and self-prompting have also been developed to enhance LLM performance by tailoring synthetic relation extraction data to specific relations \cite{}.
+
+Despite the advancements in using LLMs for relation extraction, several challenges remain unaddressed. In-context learning for relation extraction is often suboptimal due to inadequate prompting strategies that fail to effectively capture the complexity of relations and the reasoning required within query sentences \cite{}. 
+Moreover, Arabic relation extraction has received little attention in the literature, with limited exploration of LLMs for this purpose. The scarcity of high-quality, annotated Arabic datasets and the absence of effective pre-trained models tailored for Arabic further compound these challenges, leaving a significant gap in research on relation extraction for underrepresented languages \cite{}.
+
+This research aims to develop an effective approach for extracting relationships at the sentence level in Modern Standard Arabic (MSA) using LLMs. Given the complexity of Arabic, including its rich morphology and syntactic variations, accurately identifying relationships within sentences remains a significant challenge \cite{}. However, existing studies often overlook these linguistic complexities or rely on coarse-grained relation types, limiting their applicability in real-world scenarios. To address this gap, this research focuses on extracting the most commonly used fine-grained relationship types, such as family relations, entity affiliation, and location relations, which are essential for various NLP applications \cite{}. The findings will contribute to advancing Arabic NLP, with a particular emphasis on knowledge graph construction.
+
+
+\vspace{.9cm}
+
+\noindent\textbf{\large Research Objectives:}
+\vspace{.5cm}
+
+
+\noindent This research proposes to address the Relation Extraction task using in-context learning in few-shot settings and aims to enhance existing few-shot learning approaches. The proposed approach will incorporate adaptive feedback mechanisms and error-aware retrieval strategies to improve the performance of LLMs in handling Relation Extraction. Specifically, the objectives of this thesis are:
+
+\begin{enumerate}
+    \item \textbf{Joint Entity and Relation Extraction:} Propose a shift from entity-centric representations, which are primarily designed for relation classification, towards relation-aware embeddings. These embeddings would facilitate joint entity and relation extraction while enabling the capture of multiple relations in a single instance. This proposed approach aims to improve the model’s flexibility and scalability in handling complex, real-world Relation Extraction tasks.
+    
+\item \textbf{Optimized Demonstration Retrieval}: Improving the selection of informative examples to enhance few-shot learning capabilities, ensuring that the model is guided by diverse and contextually relevant relational patterns.
+
+\item \textbf{Enhanced Model Robustness}: Strengthening the model’s ability to handle ambiguous and uncertain relational patterns by incorporating more comprehensive and challenging training examples.
+
+\item \textbf{Improved Reasoning Capabilities}: Refining the model’s decision-making process through adaptive feedback mechanisms, enabling more accurate and context-aware relation extraction.
+\end{enumerate}
+
+\section{Problem Statement and Research Questions}\label{sec:research_problem}
+
+Relation extraction aims to identify semantic relationships between entities mentioned within a text, and classify these relationships into a pre-defined set of relation types \cite{}. Named entities refer to specific real-world objects, such as persons, organizations, locations, dates, and other proper nouns that carry distinct semantic meaning \cite{}. Formally, relation extraction can be formally defined as a function \( F: S \rightarrow R \), where \( S \) represents the text (i.e., sentence(s)), and \( R \) represents the set of target relations of interest (i.e., those we aim to extract). Thus, a relation \( r \in R \) is a triplet of the form \( \langle e_{i}, r, e_{j} \rangle \), where \( e_{i} \) and \( e_{j} \) are the named entities mentioned in the text \( S \).\\
+A key challenge in relation extraction is the need for an integrated approach that simultaneously identifies entity spans and their semantic relationships \cite{}. Existing methods often rely on predefined entity types, limiting their adaptability to real-world applications. This research focuses on joint entity and relation extraction, where the goal is to directly identify entity spans within the text rather than classifying entities into predefined categories \cite{}. This approach enables a more flexible and context-aware extraction process.
+\begin{comment}
+This research proposes to address the Relation Extraction task using in-context learning in few-shot settings and aims to enhance existing few-shot learning approaches. The proposed approach will incorporate adaptive feedback mechanisms and error-aware retrieval strategies to improve the performance of LLMs in handling Relation Extraction. Specifically, the objectives of this thesis are:
+
+
+\begin{enumerate}
+    \item \textbf{Joint Entity and Relation Extraction:} Propose a shift from entity-centric representations, which are primarily designed for relation classification, towards relation-aware embeddings. These embeddings would facilitate joint entity and relation extraction while enabling the capture of multiple relations in a single instance. This proposed approach aims to improve the model’s flexibility and scalability in handling complex, real-world Relation Extraction tasks.
+
+    \item \textbf{Enhancing Robustness in Uncertain Scenarios:} Propose the integration of balanced demonstrations, including ambiguous and uncertain cases, to strengthen the model’s ability to handle complex relational data. 
+
+    
+    \item \textbf{Incorporating Iterative Refinement and Reasoning:} Propose the integration of adaptive feedback mechanisms to enable iterative refinement of the model’s reasoning capabilities.
+  
+
+\end{enumerate}
+\end{comment}
+
+This research seeks to advance the field of Arabic relation extraction by addressing three areas of inquiry:
+
+\vspace{0.9cm}
+\noindent \textbf{{\large First: Constructing Arabic Relation Extraction Corpus }(Chapter\ref{}):}
+\vspace{0.5cm}
+
+
+\begin{description}
+\item[RQ1:] \textbf{Why are existing Arabic relation extraction corpora insufficient for advancing relation extraction models?}
+
+This question investigates the limitations of current Arabic relation extraction datasets, particularly their narrow scope, lack of diversity, and inability to capture the linguistic nuances of both Modern Standard Arabic and its dialects. It examines how these gaps hinder the performance and generalization of relation extraction models, especially in real-world applications.
+
+\item[RQ2:] \textbf{What relation types should be included in a new Arabic relation extraction corpus to address these limitations?}
+
+This question explores the specific relation types that need to be incorporated into a new, comprehensive corpus for Arabic relation extraction. It focuses on identifying key relations across diverse domains and linguistic features, ensuring the new corpus  captures a broader and more representative set of relations, thereby enhancing the accuracy, robustness, and applicability of relation extraction models in Arabic.
+
+\end{description}
+\vspace{0.9cm}
+
+\noindent \textbf{{\large Second: Benchmarking LLMs on Arabic Relation Extraction }(Chapter\ref{}):}
+\vspace{0.5cm}
+
+
+\noindent We aim to address three key questions to evaluate the effectiveness and generalization capability of LLMs in Arabic relation extraction.
+
+\begin{description}
+    \item[RQ3:] \textbf{How effective are LLM-based models in Arabic relation extraction?}  
+
+    
+    This question arises from observations that LLM performance in English tasks remains unsatisfactory compared to models built on small language models \cite{}. The question arises from observations that LLMs often underperform on English tasks compared to models based on smaller language models \cite{}. As will be discussed in Section \ref{}, understanding the effectiveness of LLMs in Arabic is critical for assessing their broader applicability across languages and domains.
+
+
+    \item[RQ4:] \textbf{How does the number of relation types affect the performance of LLM-based models?}
+
+    
+    Most benchmark datasets for relation extraction contain a limited number of relation types, overlooking real-world scenarios where the number of relations is much larger \cite{}. Investigating how LLMs perform with a large number of relation types is crucial for assessing their scalability.
+
+    \item[RQ5:] \textbf{How does instruction-tuning affect the generalization capability of LLMs compared to in-context learning? }
+
+    
+    Updating model weights through instruction-tuning has the potential to enhance task-specific performance \cite{}. However, it also introduces the risk of catastrophic forgetting, where performance on previously learned tasks deteriorates. As will be explored in Sections \ref{} and 
+ \ref{}, this presents a significant trade-off: while instruction fine-tuning may improve generalization within a specific domain, it could compromise the model's broader adaptability. Understanding this trade-off is essential to evaluate the practicality of instruction-tuning compared to in-context learning.
+\end{description}
+
+
+\vspace{0.9cm}
+
+\noindent \textbf{{\large Third: Proposing LLM-based joint entity and relation extraction }(Chapter\ref{}):}
+\vspace{0.5cm}
+
+This research aims to explore new methods for improving relation extraction in few-shot learning settings. The following research questions guide this research, which addresses key challenges in enhancing model performance:
+
+
+
+\begin{description}
+    \item[RQ6:] \textbf{How can LLM prompts be effectively tuned for datasets with numerous relations?}  
+    
+    This question explores how prompt engineering techniques can be adapted to handle datasets containing a large and varied set of relations. The challenge is to design prompts that effectively capture the nuanced relationships between entities across different contexts, ensuring that the model performs well across a broad spectrum of relation types. This question investigates how prompt structure, wording, and the inclusion of examples can influence model performance in relation extraction tasks involving multiple relations. Additionally, it examines how these techniques can address issues like ambiguity in relations and ensure consistent model predictions in real-world scenarios.
+
+
+
+    \item[RQ7:] \textbf{How do ambiguous and uncertain cases in training data impact a model’s ability to extract relationships?}
+
+    
+    This question explores how the presence of ambiguous and uncertain examples in training data influences a model's performance in extracting relationships. It investigates whether exposing models to noisy, incomplete, or conflicting instances helps improve their robustness, making them more capable of dealing with real-world challenges where data may be unstructured or ambiguous.
+
+    \item[RQ8:] \textbf{How does feedback improve LLM performance in relation extraction?}
+    
+    This research question explores the impact of iterative feedback mechanisms on the LLMS in relation extraction tasks. Specifically, it investigates how the incorporation of adaptive feedback during the extraction process can refine the model’s predictions, enhance its ability to manage complex and ambiguous relationships, and improve its overall generalization to diverse real-world scenarios. Additionally, this question seeks to understand the effect of multi-turn feedback loops, and direct preference optimization on the model’s accuracy, robustness, and scalability across various relation types, particularly in low-resource languages like Arabic \cite{}.
+
+
+\end{description}
+
+
+\section{Contribution}
+\label{sec:contribution}
+This dissertation addresses the challenges of relation extraction in Arabic through three key contributions: (i) the construction of a high-quality, manually annotated Arabic relation extraction corpus, (ii) the novel benchmarking of LLMS on Arabic relation extraction, and (iii) a new LLM-based framework to enhance performance in Arabic Relation extract. Each contribution will be discussed in detail in the following chapters.
+
+\vspace{.9cm}
+\noindent \textbf{\large 1. Construction of Arabic Relation Extraction Corpus ( Chapter\ref{})} 
+\vspace{.5cm}
+
+
+This contribution addresses \textbf{RQ1} and \textbf{RQ2} by introducing Wojood\textsuperscript{Relations}, the first manually curated Arabic relation extraction dataset, annotated by native speakers to overcome these challenges. Wojood\textsuperscript{Relations} is the largest and most comprehensive Arabic relation extraction corpus, comprising 33K sentences (550K tokens) with 40 relation types across diverse domains, covering both Modern Standard Arabic (MSA) and dialects. Our analysis demonstrates that Wojood\textsuperscript{Relations} exceeds existing datasets in both scope and quality, providing a solid foundation for benchmarking and advancing relation extraction models. \\
+
+\textit{The corpus is 90\% completed and I am writing an article about it}
+
+\vspace{.9cm}
+\noindent{\large \textbf{2. Benchmarking LLMs on Arabic Relation Extraction (\S \ref{}) }}
+\vspace{.5cm}
+
+
+This contribution addresses \textbf{RQ3}, \textbf{RQ4}, and \textbf{RQ5} by systematically evaluating the performance of large language models (LLMs) on Arabic relation extraction tasks. By comparing zero-shot, few-shot, and fine-tuned settings, as well as exploring advanced prompting strategies like CoT and RAG, the study provides insights into the trade-offs between generalization and task-specific optimization. Additionally, it investigates how ambiguous, uncertain, and diverse data affect the robustness of LLMs in relation extraction, aiming to determine the most effective model configurations for this specialized task. 
+
+
+
+\textit{The benchmarking is 50\% completed and I am writing an article about it}
+
+
+
+
+ %Our analysis underscores the unique challenges of Arabic relation extraction, including the influence of handling numerous relation types on model performance.
+
+\vspace{.9cm}
+\noindent{\large \textbf{3. LLM-Based Framework for Arabic Relation Extraction (Chapter \ref{})}}
+\vspace{.5cm}
+
+This contribution addresses \textbf{RQ6}, \textbf{RQ7}, and \textbf{RQ8} by proposing a multi-component model for few-shot entity and relation extraction in Arabic, leveraging LLMs to enhance performance. The model investigates how LLM prompts can be effectively tuned to handle datasets with numerous relations, exploring prompt engineering techniques to capture the nuances of diverse relation types across contexts (RQ6). It also examines the impact of ambiguous and uncertain examples on the model's ability to extract relationships (RQ7), and evaluates the role of iterative feedback and multi-turn prompts in improving extraction accuracy and model refinement (RQ8).
+%Few-shot entity and relation extraction in Arabic presents unique challenges due to the complexity of the language. Existing methods often struggle to balance generalization with precision, particularly in low-resource scenarios. 
+
+%In this dissertation, we propose a multi-component model for few-shot entity and relation extraction, designed to address these challenges when leveraging LLMs. The approach begins with a relation classification module that filters out confident and uncertain relations in the test sentence. It then employs a demonstration retrieval module to select the most relevant examples, which are then organized into support sets and query sets. Finally, a teacher-student framework is proposed using a multi-turn prompt. In the first turn, the teacher module leverages the support set for guidance and the query set for an initial assessment, generating feedback.  The student then uses the feedback to construct the second-turn prompt, helping the model refine its predictions on the test sentence. This pipeline enhances relation extraction by effectively utilizing few-shot demonstrations and feedback mechanisms.
+
+
+By addressing these research questions, the dissertation aims to provide a comprehensive evaluation of current LLM capabilities in Arabic Relation Extraction while proposing and validating innovative solutions to improve their performance.
+
+
+\section{Dissertation Structure}
+\label{sec:thesis_structure}
+
+This dissertation is structured into five chapters. Chapter \ref{} provides background information and a review of related literature. Chapter \ref{} discusses the construction of the Relation Extraction corpus used in this research. Chapter \ref{} focuses on the benchmarking of LLMs in the context of Arabic relation extraction, evaluating their performance and limitations. Chapter \ref{} introduces the proposed methodology for improving relation extraction in few-shot settings.
+

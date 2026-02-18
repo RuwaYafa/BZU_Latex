@@ -1,0 +1,106 @@
+\chapter{Research Methodology}
+\label{Chapter4}
+
+In the rapidly growing landscape of cybersecurity, the detection and mitigation of Android malware detection remain essential challenges. With the accumulation of machine learning models in malware detection, researchers and practitioners also face the persistent issue of concept drift---the phenomenon where statistical properties or defining features of the target variable change over time in an unpredictable manner. Addressing concept drift is critical for maintaining the efficacy and reliability of malware detection models over time.
+
+This research aims to investigate the prevalence of concept drift in different machine learning models used for Android malware detection, to understand the root cause of concept drift, and to develop effective strategies for detecting and mitigating this phenomenon. By analyzing factors contributing to concept drift, identifying suitable metrics and methods for its detection, and developing retraining approaches to adapt machine learning models to the changes in the data distributions. In summary, this research seeks to improve the resilience of malware detection based on machine learning models.
+
+\section{Research Philosophy}
+This research combines both research philosophies, relying on positivism to understand the problem of prevalence concept drift and pragmatism to find solutions by investigating concept drift in Android malware detection models. 
+
+\BfPara{Positivism} Underscores the use of empirical observation and scientific methods to find objective facts, which can be practical for understanding the prevalence and severity of concept drift within Android malware detection. This philosophical view provides a strong framework for testing the existence and features of concept drift within the domain of Android malware detection. Quantitative methods enable the objective measurement and analysis of concept drift phenomena. Additionally, it can offer an evaluation of the efficacy of proposed methods for automated concept drift detection and retraining strategies through defined metrics. 
+
+\BfPara{Pragmatism} Emphasizing the practical application of research findings to address real-world problems. The dynamic nature of concept drift encourages researchers to adapt and develop methods to solve this problem. This perspective is particularly valuable for developing practical solutions and strategies for mitigating concept drift in Android malware detection models, taking into account the various contexts and limitations faced by researchers in this domain.
+
+By combining positivism and pragmatism, this research can benefit from the powers of both philosophical viewpoints. It can utilize strict scientific methods to investigate the phenomenon of concept drift while also prioritizing and evaluating practical solutions that can be implemented in real-world settings. This integrated approach can address both theoretical issues and practical challenges in the field of Android malware detection.
+
+
+\section{Research Design}
+This research will use both quantitative and qualitative methods to investigate concept drift in Android malware detection models. This approach will provide an understanding of the factors that cause the prevalence of concept drift, the methods to detect it, retraining strategies, and addressing model forgetting in the context of Android malware detection. 
+
+\subsection{Concept Drift: Understanding and Adaption Strategies} We will follow a qualitative research method that includes data collection through a systemic review of the literature and conduct case studies and data analysis, which we elaborate as the following: 
+
+\BfPara{Data Collection} 
+The first phase of this study involves conducting a comprehensive \textbf{survey} (systematic literature review) of existing research on concept drift in Android malware detection models using machine learning and deep learning techniques. This survey seeks to explore the existing body of knowledge about the underlying causes of concept drift and the different adaptation approaches used in this domain. In addition, the survey will aim to identify and explain the research challenges inherent in this domain. Through this study,  the results will shed light on the factors contributing to concept drift and model forgetting, thus establishing a basis for further research.
+
+\BfPara{Case Study and Data Analysis}
+The second phase will be a case study, through the identification and examination of several rapidly evolving malware families (both first seen and last update), focusing on the particular change in their behavior or code (static and dynamic features) that leads to concept drift. The comparative analysis will be applied to the case study by comparing different versions of malware families and investigating the changes in features that result in concept drift in machine learning models. To do that, we intend to use the existing dataset \cite{Guerra-ManzanaresBN21} that included more than 41K malware samples classified into 240 families and 428 static and dynamic features. Then we will collect new malware samples that have the same families to study the drift in the experiments. To collect malware samples, there are repositories such as MalwareBazaar~\cite{MalwareB12:online}.
+
+\subsection{Factors Causing the Drift in Data and Features space}
+The datasets used for Android malware detection include a set of features that are classified into static and dynamic features. 
+
+To understand how these features are impacted by malware's evolving characteristics, leading to concept drift, we will conduct a detailed analysis. This analysis will focus on identifying which specific features(static or dynamic) are most susceptible to changes over time and result in concept drift.
+For static features, we will investigate how different features, such as newly introduced APIs, changes in permission models, and modifications in code obfuscation techniques by adversaries affect the detection models. This will include investigating historical data to specify when and how these features have changed and correlating these shifts with changes in detection accuracy. Furthermore, in relation to {\bf RQ4.2}, we can examine and quantify the effect of deprecated features of the Android operating system on the concept drift. 
+
+For dynamic features, we will analyze how changes in runtime behaviors, such as changes in the system call sequences, impact the models. Furthermore, we intend to understand the types of concept drift (e.g., abrupt, gradual, incremental, recurring) that mostly affect each type of feature, so we can better develop our detection models to adapt to these changes.
+
+\subsection{Evaluation Metrics and Performance Monitoring}
+
+\BfPara{Metrics Selection}
+We will focus on establishing robust evaluation metrics and continuous monitoring strategies to evaluate the performance of machine learning models used to detect Android malware, especially in datasets with unbalanced distributions.
+In malware datasets, the distribution of families tends to be unbalanced. To be able to efficiently measure the performance of detecting families, the measure should handle imbalances such as AUC and F1-scores.
+
+
+\BfPara{Continuous Model Monitoring} 
+To establish a system for continuous evaluation of the model as new data of malware becomes available. We can create a feedback loop for the model that includes the following:
+
+\begin{itemize}
+    \item[\ding{172}] {\bf Real-time Data Ingestion.}  Develop techniques to periodically include new malware samples into the dataset, ensuring that the model is tested using up-to-date new malware samples. For example, integrated threat intelligence repositories with machine learning models 
+
+      \item[\ding{173}] {\bf Model Re-evaluation.} based on the ingested data, the model will be tested aging these samples. As a result, we will reevaluate the model performance to reflect any changes in the data landscape.
+      
+        \item[\ding{174}] {\bf Model Adjustment.} Based on the evaluation results, adjust model parameters or retrain the model using updated datasets to better cope with new types of malware that may be emerging. Thus, by evaluating and measuring the change in the model performance when using up to date samples, and the impact of model adjustment step to up to date model training we can answer the \bf{RQ3}.
+
+\end{itemize}
+
+\subsection{Concept Drift Detection}
+Previous studies focused on detecting concept drifts in machine learning models that utilized binary classification tasks (i.e., malware or benign). In this work, our objective is to investigate the detection of concept drift within the malware family. It is essential to distinguish the families of malware to develop a mitigation strategy and risk assessment for specific malware. For example, the \textit{Adware} type includes the following families ``ewind'' and ``shedun'', which is different from the \textit{Ransomware} type that includes families like ``lockscreen'', ``slocker'', and ``smsspy''. 
+
+To do that, we have different datasets, only one of them supports the timestamp. But this dataset determined the malware family without including malware types, as shown in section \ref{SectionDatasets}. So, we need to generate a new dataset collected from different sources. To validate the concept drift in various machine and deep learning models mostly used in the literature.  
+
+\BfPara{Feature engineering and data analysis}
+Extract the appropriate characteristics from the datasets. This may include techniques such as feature selection, dimensionality reduction, and normalization to prepare the data for analysis. In the concept drift, it is important to highlight two critical points. The first one deals with the balance of data, especially for malware families. The second issue will use NLP techniques to find a semantic correlation between the old and new malware families. 
+
+\BfPara{Retraining strategies}
+The adapted retraining strategy should ensure the minimization of the cost of the model retraining process while preserving the semantic function to identify the relations between the existing and new malware sample to be classified into the target family or a new family, indicating a zero-day attack. In addition, to maintain model accuracy, we will investigate various continuous and reinforcement learning solutions.
+
+
+\subsection{Model Immunity Against Forgetting}
+While the concept drift solution focuses on the updated model to overcome the outdated trained model. Model retraining can result in another issue called model forgetting, which is also known as catastrophic forgetting, where a machine learning model loses previously obtained knowledge when it is retrained on new data. In other words, model forgetting occurs when a detection model, after it was retrained to identify new malware, loses the ability of the model to effectively identify older malware that it was previously able to detect.
+
+To address model forgetting in the context of retraining machine learning models for Android malware detection, we will follow the following steps: 
+
+\begin{itemize}
+
+\item[\ding{172}] Gather datasets that contain benign and Android malware applications, in addition to static, and dynamic features, malware families, and support timestamp. While there is only one data set---KronoDroid~\cite{Guerra-ManzanaresBN21}---that supports timestamp, the malware families are not balanced. We intend to explore alternative methods for approximating timestamps and balance malware families, such as grouping by collection date or version number and annotated based on the threat intelligence reports and malware signatures. This step can address {\bf RQ4.1}
+
+\item[\ding{173}] Establish a baseline model by training the model on a representative malware dataset and evaluating the performance using selected metrics such as AUC and F1-score.
+
+\item[\ding{174}] Segment the dataset chronologically to simulate the evolving malware and retrain the model periodically with these new data segments.
+
+\item[\ding{175}] Previous studies employed various retraining strategies such as ensemble learning, online learning, and active learning. To add these strategies, we will examine reinforcement learning to mitigate forgetting. Reinforcement learning will be employed to automate and adjust the parameters of the model based on feedback from performance metrics, to keep previously learned knowledge. The performance of retrained models will be evaluated on both actual and new validation datasets. Additionally, We will enhance retraining algorithms and combine hybrid approaches to maximize model immunity against forgetting.   
+
+    \end{itemize}
+ 
+
+% \subsection{Timeline}
+% \begin{enumerate}
+%     \item  Create a comprehensive systematic review of the literature (3-4 months). (Publish the result)
+%     \item Prepare dataset that will support the malware family and type (2-3 months).
+%     \item Validating machine learning and deep learning models to detect concept drift and investigate in forgetting issue (3-4 months). ( Publish the result). 
+%     \item Propose a solution to mitigate concept drift issues based on best retrain strategy, opportunity reinforcement learning (3-4 months). ( Publish the result)
+%     \item Writing final dissertation 
+    
+%\end{enumerate}
+
+\subsection{Conclusion}
+Android security is gaining importance due to the widespread use of mobile for everyday tasks, the large user base, and the criticality of some of the applications used by mobile users make them an attractive target. Android malware detection models face significant challenges due to a phenomenon known as concept drift. This phenomenon is considered a critical problem that frequently struggles to adapt to the dynamic nature of malware. This research aims to investigate the prevalence of concept drift in various machine learning models for Android malware detection and develop effective strategies to understand, analyze, detect, and mitigate concept drift to provide sustained performance and robust detection models over time. Additionally, it is important to investigate the model of forgetting after applying the retaining strategies to be sure that the mode enhances the detection of new samples while preserving the ability detection old samples.
+
+
+
+
+
+
+
+
+

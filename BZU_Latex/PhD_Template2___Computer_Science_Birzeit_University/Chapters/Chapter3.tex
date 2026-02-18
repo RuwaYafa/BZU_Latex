@@ -1,0 +1,486 @@
+
+\chapter{Related Work}
+\label{Chapter3}
+
+Dealing with Android malware involves a multifaceted task, requiring consideration of various factors during the analysis and detection phases. Several approaches have been proposed to analyze Android malware. Most studies analyzed applications and classified them as benign or malicious. Malware analysis uses three main methodologies: static, dynamic, and hybrid approaches. Subsequently, these analysis techniques extract features from applications to identify and detect malware. In the static approach, the application is analyzed before it is installed on the device. The dynamic approach monitors the application's behavior at run-time, while the hybrid approaches combine both to identify malicious apps.
+
+\section{Android Malware Analysis and Detection}
+Android malware detection methods can be divided into three methods called ``network traffic based methods'' that monitor network traffic data and analyze these data~\cite{GargPS17,WangYCYZC18}. Wangc \etal proposed a method that analyzes the words related to sensitive information in the HTTP header of the traffic data. Malware transmits sensitive information via HTTP GET and POST. Thus, this stream of data that passes in the HTTP packets can be used to extract features that contain semantic text unique to mobile devices, such as ``IMEI,'' ``longitude,'' and ``latitude.'' This type of analysis can be considered dynamic analysis. However, this method cannot be used efficiently with new malware that encrypts payloads to keep their malicious code hidden \cite{WangYCYZC18}.
+Garg \etal addressed the encryption data problem by comparing the network traffic patterns between benign applications and malware. But this method still ignores malware whose activities do not depend on network traffic~\cite{GargPS17}. Somarriba \etal proposed a dynamic analysis method for malware detection based on monitoring the behavior of applications at runtime. The proposed framework finds malicious URLs from the app traces on the mobile device and connects them to DNS service network traffic logs from the mobile operator. The limitation of this method is that it only considers URL and DNS traffic, while malware may use DNS tunneling techniques and HTT traffic~\cite{SomarribaZ17}. Moreover, the experiment was conducted on an emulator where the malware can be detected but not on a real device because the emulator does not support the anti-debugging evade method. Additionally, malware that uses certificate pinning can evade detection. The second and third methods are ``inner interaction based''~\cite{CaiMRY19} and ``permission-based''~\cite{AroraPC20}. These two methods focus on the Android system and the application components. In the next sections, we will present several analytical and detection approaches based on these methods at the Android mobile level. It is worth mentioning that there are unique characteristics for Android malware, which was investigated by Alasmary \etal~\cite{AlasmaryA0CNM18} who proposed a comparative study of the Internet of Things (IoT) and Android malware using graph-based analysis techniques. The authors leverage control flow graphs (CFGs) to represent the structural properties and behaviors of malware samples. They extract CFGs from IoT and Android malware samples and compute various graph metrics, to characterize and compare the malware families. The analysis indicated significant differences between IoT and Android malware in terms of their graph properties~\cite{AlasmaryA0CNM18}. 
+
+\subsection{Static Approach}
+The static analysis approach disassembles and decompiles code without running the application. Moreover, the static approach extracts the feature modalities from the APK using various methods, which are used for further applications such as malicious app classification and family attribution. Alzubaidi~\cite{Alzubaidi21} surveyed the literature in this space and highlighted three broad feature extraction methods: signature-based, permission-based, and Dalvik bytecode. In the study~\cite{KarbabDDM21}, it added a resource-based method and gave the name semantic-based instead of Dalvik bytecode. Vishnoi \etal used the term ``misuse detection,'' which is synonymous with (knowledge-based or signature-based). Additionally, ``anomaly detection'' is the same as the behavior-based approach in the dynamic approach ~\cite{VishnoiMNP21}. Regardless of which method is used, the main objective of static analysis is to extract features that will be used in detection models, such as machine learning or statistical methods for malware detection. 
+
+% \citeauthor{WuZ021} in survey' \cite{WuZ021} paper summarized the app's components and static features as shown in Figure \ref{fig:compStatic}.  
+
+% \begin{figure}[H]
+% \centerline{\includegraphics[scale=0.50]{Images/compStatic.png}}
+% \caption{ App's components and static features. \cite{WuZ021}}
+% \label{fig:compStatic}
+% \end{figure}
+
+
+\BfPara{\ding{172} Signature-based method} Signature-based detection generates a unique signature pattern for known malware applications, the features extracted from the characteristics of Android applications such as permissions, broadcast receivers, content strings, or bytes \cite{LiFWCZYWG22}. The signature app compares to the malware signature library, which includes a unique signature for each known Android malware. \citeauthor{NgamwitrojL18} proposed a signature-based malware detection method that includes the permission and transmission data extracted from the manifest file. Malware signatures were created from 800 applications. The result of the detection of malicious signatures in the applications was 86. 56\% accuracy \cite{NgamwitrojL18}. \citeauthor{TchakounteNKU21} proposed a LimonDroid, an Android system that combines fuzzy hashing with YARA rules and VirusTotal signature schemes to improve the signature database used to identify Android malware applications. LimonDroid has been tested with 341 malicious and 300 benign applications, achieving an accuracy of 97.8\%. Comparison with similarity-based solutions shows that LimonDroid is more efficient in identifying Android malware\cite{TchakounteNKU21}. The study's main goal was not to suggest an improved detection method compared to existing ones but rather to create a strong signature database capable of accurately recognizing malicious trends in Android applications \cite{TchakounteNKU21}.
+
+
+\BfPara{\ding{173} Permission-based method} Ilham \etal proposed a method for detecting Android malware in mobile applications. The permissions were extracted from the manifest file. Three feature selection algorithms were used: filter, wrapper, and embedded, to select 74 permission features. There were 731 malware and benign samples, with 673 malware and 58 benign. The best performance of the 10-fold cross-validation was 0.98 using all permissions with the Random Forest (RF) and SMO algorithms. Additionally, the effect of the feature selection algorithms on the result was negative, with an accuracy of 0.93. This study used a small number of samples and an unbalanced data set ~\cite{IlhamAA18}. Kato \etal proposed an Android malware detection scheme that used the Composition Ratio (CR) of permission pairs. New databases were constructed for the CR composite from 40 permissions, including 19K malware and 11500 benign samples collected from Androzoo, Drebin, and VirusShare. The RF classifier detected malware with an accuracy of 0.97 using the Drebin dataset and 0.84 with the mixed dataset, which consists of 6000 malware applications and 6000 benign. The limitation of this study was a leak in the detection app with a small number of permissions and a limitation in the selection of dangerous permission; perhaps more permissions should be included~\cite{KatoSS21}. The study~\cite{ArifRMAIF21} suggested a fuzzy analytical hierarchy process technique based on risk to evaluate the Android mobile application and a mobile malware detection system based on multi-criteria decision-making. This study used a static analysis to extract features, including permission-based characteristics. Risk analysis makes mobile users more aware of the risks of approving every permission request. Risk is divided into four categories: extremely high, high, medium, and low.
+The study~\cite{MatRKAF22} used static analysis to analyze permission-based features. Permission features were used with the Bayesian probability model. Two algorithms were used for feature optimization: information gain and $\chi^2$ (Chi-square) . These algorithms were combined with the Naive Bayes classifier and the best accuracy for 10000 samples (5000 malware and 5000 benign) obtained from the AndroZoo and Drebin databases achieved 0.91 accuracy.
+ 
+Sahin \etal investigated the reduction of the dimension of the vector generated for malware detection. The machine learning algorithms used included the Multilayer Perception Model (MLP), Naive Bayes NB, Linear Regression, k-nearest neighbors (KNN), C4.5, RF, and Sequential Minimal Optimization (SMO). Static analysis was used to extract Permission features from the 2000 apps, half of which were malware and the other half benign. In the feature selection phase, linear regression for feature selection was used to reduce the features from 102 to 27. The MLP algorithm outperformed all other classifiers and achieved an accuracy of 0.96 with a few features~\cite{SahinKAK23}.
+
+Some studies have combined the permissions features with other features extracted from the APK source files.  
+ In~\cite{UroojSMAR22}, ensemble learning was used to classify malicious Android applications.  Seven feature sets were included: Permissions, API Calls, Intents, App Components, Packages, Services, and Receivers. The number of features that belong to these feature sets is more than 56000 extracted from 100000 applications. The final dataset was collected from three databases: MalDroid, DefenseDroid, and GD, and included 18578 malware apps and 5716 benign. The result of the learning of the ensemble model that included AdaBoost, SVM, RF, NB, KNN, and decision tree algorithms was 0.96. 
+ 
+\citeauthor{ShatnawiYY22} used the machine learning algorithms SVM, KNN, and NB and a publicly available dataset. Two features, the selection permissions and API calls, are used to detect malware. The dataset (CICInvesAndMal2019) illustrated Android malware's two sets of features: permissions and API calls. The total number of features acquired from the dataset was 8111, including 2089 permissions and 6022 API call features. The best classifier was SVM, which achieved a 0.94 accuracy rate using permission features and a 0.83 when using API calls~\cite{ShatnawiYY22}.
+
+\BfPara{\ding{174} Resource-based method} This analysis method depends on the meta-data describing app components defined in the manifest file, such as required permissions, activity, service, intent, and more. Urooj \etal used reverse engineering to extract features from the source code of an Android app. Seven feature sets were used and included:\textit{ Permissions, API Calls, Intents, App Components, Packages, Services, Receivers}. The number of features that belong to these feature sets is more than 56,000 extracted from 100,000 applications. Trying to access some permissions may indicate malware behavior. For example, SMS, MICROPHONE, CONTACTS, STORAGE, and LOCATION are classified as dangerous permissions. However, VIBRATE and SET WALLPAPER are permissions without risk. The intent can be considered related to malware depending on the phrase that is used, such as (android.net), which is linked to the network manager, and intents embedding (com.android.vending), for billing transactions. API calls are tools that are controlled by the Android operating system. Camera, SMS, Bluetooth, GPS, network, and NFC are examples of API calls. These resources must be defined in the manifest file for use. When API calls request device resources or sensitive information, they are commonly malware. getDeviceId(), sendTextMessage(), setWifiEnabled(), and execHttpRequest() are all sensitive APIs. The set of broadcast features is an example of data transfer between components of two applications. Broadcast Receiver enables Android applications to respond to external events such as turning on the phone, receiving a text message, or making a phone call~\cite{UroojSMAR22}. This study~\cite{UroojSMAR22} and after the features extracted using \textit{Jadx-Gui} tool for decompile APK, and \textit{Androguard} to create vector mapping. Machine learning is used to classify malicious Android applications. The final dataset was collected from three database: MalDroid, DefenseDroid, and GD, and included 18,578 malware apps and 5716. The results and findings were 96. 24\% accuracy in malware classification. Millar \etal presented a multiview CNN-based neural network for the static analysis of Android malware. The selection of features depends on the opcodes, permissions, and proprietary Android APIs. The study evaluation for the zero-day scenario with the Drebin and AMD datasets showed that the model performed weighted average detection rates of 0.91 and 0.81, respectively. For general malware detection, the F1 scores of 0.9928 and 0.9963 again on the Drebin and AMD datasets, respectively~\cite{MillarMRM21}. Dhalaria \etal proposed a framework that combined three static features extracted from \textit{classes.dex} and \textit{AndroidManifest} files. The features included API calls, permissions, and intents. These combined features were used in the machine learning algorithms and K-Nearest Neighbor and achieved accuracy 95.9\%~\cite{DhalariaG20}. Applications were collected from apkmirror, apkpure, and virus share, and the dataset in this study~\cite{DhalariaG20} was labeled according to the Avira Antivirus tool with a total of 3547 application samples. 
+
+\BfPara{\ding{175} Semantic-based method} 
+
+is a branch of lexical analysis that uses data from different sources to extract semantic information. Dalvik bytecode embeds semantic information, such as methods, classes, and instructions, to generate data flow graphs that detect privacy leakage and misuse of telephony services. Another approach, by Bai \etal, proposed a scheme that uses network traffic and converts it into text, in which the N-gram is used for feature representation and the CNN model for malware classification. This approach uses NLP to extract features from APK components that are then used to form the semantic text~\cite{BaiLLQH21}. Alternatively, Zhang \etal proposed an approach for Android malware detection that depends on the method-level correlation of abstracted API calls from applications. However, the features are extracted from the code file. Each method code is replaced by API calls to generate a set of abstracted API call transactions. The association rules between abstracted API calls are used to calculate a confidence level, which indicates the semantics of the behavior for an app~\cite{ZhangLZP19}. Mc \etal used natural language processing and machine learning, the features extracted from the raw opcode sequences of the Android app~\cite{McLaughlinRKYMS17}. Karbab \etal proposed the MalDozer framework to detect Android malware and family members using raw API method calls extracted from DEX assembly sequences and fed to deep learning~\cite{KarbabDDM18} .
+
+\BfPara{\ding{176} Image-based method} In addition to the methods mentioned above, which are used in malware analysis and detection, other approaches have been used. For example, the image-based approach is one of these directions that use static analysis to extract features and convert them to an image fed to machine learning and deep learning~\cite{XingJEJW22}. Unver \etal proposed the malware detection approach using an image-based technique. The features are extracted from the Manifest.xml, DEX, and Resource.ARSC files for each Android app and transformed into grayscale images. The study used the local feature selection algorithm and the global feature selection algorithm to optimize the training data that were fed into machine learning \cite{UnverB20}. The study~\cite{YadavMRVP22} suggested EfficientNet-B4, a CNN model, to detect Android malware using image-based malware representations of the Android DEX file. 
+An image-based approach may be affected by code manipulation techniques and code obfuscation, a weakness of almost all static malware analysis detection techniques~\cite{UnverB20}. The summarizing and comparison of these studies are shown in tables \ref{tab1:Static}, \ref{tab2:Static}
+
+%\begin{landscape}
+    
+%\begin{adjustbox}{angle=90}
+%\begin{table}
+\begin{sidewaystable}
+\begin{center}
+\caption{A comparison of a representative set of the literature work on static analysis approaches compared temporal across the utilized method, sample size, dataset name (wherever available), and the utilized features.}
+%\renewcommand{\arraystretch}{1.5}
+%\linespread{0.8}
+\scalebox{0.75}{
+\begin{tabular}{p{10em} p{2em} p{5em} p{10em} p{12em} p{25em}}
+\hline
+\textbf{Ref} &\textbf{Year} & \textbf{Method} & \textbf{Samples} & \textbf{Dataset} & \textbf{Features}  \\ \hline
+Ngamwitroj \etal \cite{NgamwitrojL18} & 2018 & Signature  &  800 apps & NA &  Permission,
+Broadcast-receiver \\
+\hline
+
+Tchakounte \etal \cite{TchakounteNKU21} & 2021& Signature & 341 M, 300 B & AMD (2019)  & App size, Permission, SHA1 and SHA256 from  app’s certificate.  Fuzzy hashing computed
+from source file \\ 
+ \hline
+Ilham \etal\cite{IlhamAA18} & 2018  &  Permissions & 673 M, 58 B & AMD, Google Play & Manifest file, Permissions.  \\ 
+ \hline
+ Kato \etal \cite{KatoSS21} & 2021 & Permission & 19K M, 11500 B & Androzoo, VirusShare, Drebin & Permissions  \\
+ \hline
+Arif \etal \cite{ArifRMAIF21} & 2021 & Permission & 5K M, 5K B & Drebin, Androzoo & Permissions \\
+\hline
+Mat \etal \cite{MatRKAF22} & 2022 & Permission & 5K M, 5K B & Drebin, Androzoo & Permissions \\
+\hline
+Sahin \etal \cite{SahinKAK23} & 2021 & Permission & 1K M, 1K B & APKPure, AMD (2017) & Manifest file, Permission \\
+\hline
+Millar \etal \cite{MillarMRM21} & 2021 & Permission \& Resource & 41275 M & Drebin, AMD (2017), Malgenome,  Intel
+Security dataset, Google Play &  opcodes, permissions, arbitrary API package, proprietary Android API package. \\
+\hline
+Urooj \etal \cite{UroojSMAR22} & 2022 & Permission \& Resource & 14078 M, 5716 B & MalDroid, DefenseDroid, Google Play & Permissions, API Calls, Intents, App Components, Packages, Services, Receivers. \\
+\hline
+Shatnawi \etal \cite{ShatnawiYY22} & 2022 & Permission \& Resource & 396 M, 1126 B & CICInvesAndMal2019 &  Permissions ,Intents, API calls. \\
+\hline
+ Dhalaria \etal \cite{DhalariaG20} & 2020 & Permission \& Resource & 3547 M\&B &  apkmirror, apkpure, virusshare & API calls, permissions, and intents\\ 
+\hline
+ Bai \etal \cite{BaiLLQH21} & 2021 & Semantic & 4354 M, 6500 B & CICAndMal2017 & Network traffic 19.2 GB for malware, and 19 GB for benign apps \\
+\hline
+ Zhang \etal \cite{ZhangLZP19} & 2019 & Semantic & 26031 M, 25833 B & AMD, Drebin, Androzoo  & API calls, Smali code, Methods name\\ 
+ \hline
+McLaughlin \etal \cite{McLaughlinRKYMS17} &2017 & Semantic & (1260 , 2475, 9902)  M, (863, 3627, 9268) B & Genome, Google play, Intel Security  & opcode sequences \\
+\hline
+Karbab \etal \cite{KarbabDDM18} & 2018 & Semantic & (33066, 20089) M, 37627 B,  & Malgenome, Drebin, MalDozer &  API method calls \\
+\hline
+Xing \etal \cite{XingJEJW22} & 2022 & Image & (8121, 8121, 5384) M, (7015, 2000, 5000) B & VirusShare, Google Play & Methods \\
+\hline
+Unver \etal \cite{UnverB20} & 2020 & Image & 4850 M, 4850 B & Drebin, AMD, Malgenom, Google play & Manifest, DEX, Resource files \\
+\hline
+\end{tabular}}
+\label{tab1:Static}
+\end{center}
+\end{sidewaystable}
+%\end{adjustbox}
+%\end{landscape}
+
+
+\begin{sidewaystable}
+\begin{center}
+\caption{A comparison of a representative set of the literature work on static analysis approaches compared Detection method, Result, Limitation.}
+%\renewcommand{\arraystretch}{1.5}
+%\linespread{0.8}
+\scalebox{0.75}{
+\begin{tabular}{p{10em} p{9em} p{8em} p{38em}}
+\hline
+\textbf{Ref} & \textbf{Detection Method} & \textbf{Results}  & \textbf{Limitation}  \\ \hline
+
+Ngamwitroj \etal~\cite{NgamwitrojL18} & Statistical  & Accuracy: 0.865 & The signature constructed form only two features, permissions and broadcast-receiver. The data source of the applications was not known. Introduced only 17 malicious signature patterns \\
+\hline
+
+Tchakounte \etal~\cite{TchakounteNKU21}  & Rule based & Accuracy: 0.978 &  The algorithm used to measure the degree of similarity among applications was originally designed to identify shared characteristics in email spam messages.  \\ 
+ \hline
+Ilham \etal~\cite{IlhamAA18}  & ML &Accuracy: 0.98 & Only one feature type is used. The feature selection made the result worse than using all features  \\
+ \hline
+Kato \etal~\cite{KatoSS21} &ML & Accuracy: 0.973 & Leak of detection app with few permissions.Limitation in selecting dangerous permission; perhaps more permissions should be included.  \\
+ \hline
+Arif \etal~\cite{ArifRMAIF21} &Fuzzy AHP  & Accuracy: 0.9054 & Only focused on permission based features  \\
+\hline
+Mat \etal~\cite{MatRKAF22} &ML  &Accuracy: 0.91 & Only focused on permission-based features  \\
+\hline
+Sahin \etal~\cite{SahinKAK23}  & ML & Accuracy: 0.96 & Only focused on permission-based features \\
+\hline
+Millar \etal~\cite{MillarMRM21}  &ML  & Accuracy: 0.959 & Ignored protection levels and the expiration of permissions. \\
+\hline
+Urooj \etal~\cite{UroojSMAR22} & ML & Accuracy: 0.9624 & Realtime permissions requests and API requests were not included. \\
+\hline
+Shatnawi \etal~\cite{ShatnawiYY22} & ML &Accuracy: 0.94 & Not validate with up to date dataset   \\
+\hline
+Dhalaria \etal~\cite{DhalariaG20}  & ML  & Accuracy: 95.9 & Not explainable the low accuracy with intents features 0.345 while the combination reached 0.919  \\
+\hline
+Bai \etal~\cite{BaiLLQH21} &DL  &Accuracy : 0.926 &  Limitation when the network traffic uses encryption protocols  \\
+\hline
+Zhang \etal~\cite{ZhangLZP19} & ML & Accuracy: 0.98  & Use only API calls features.\\
+ \hline
+McLaughlin \etal~\cite{McLaughlinRKYMS17} &NLP, CNN  &Accuracy: 0.80-0.98 &  Low performance when testing different datasets, accuracy decay to 0.69 \\
+\hline
+Karbab \etal~\cite{KarbabDDM18} & DL &F1-Score of 0.96-0.99  &Not tested with external data  \\
+\hline
+Xing \etal~\cite{XingJEJW22}  & ML, DL & Accuracy: 0.96 & Complex model should be retrained to involve a new malware to detect it \\
+\hline
+Unver \etal~\cite{UnverB20}  & ML & Accuracy : 0.987 & Not tested with external data \\
+\hline
+\end{tabular}}
+\label{tab2:Static}
+\end{center}
+\end{sidewaystable}
+
+
+\subsection{Dynamic Approach} 
+\hfill\\
+This method analyzes an app's behavior in terms of its dynamic properties. Dynamic analysis can be used on the hardware level by collecting memory, CPU, battery, sensors, camera, and screen usage data. At the software level, features are extracted from network traffic, app patterns, information flows, privileges, permissions, data access, API calls, and different predefined functions~\cite{Alzubaidi21}.
+Sihag \etal proposed a solution based on a dynamic analysis method to explore the behavior of the application~\cite{SihagSV020}. The Android logs at the kernel level are used to generate app signatures using Logcat. If the app attempts to leak information, jailbreak, gain access to dangerous permissions, or gain root privileges, the app is malware. Bhatia \etal used statistical analysis methods to understand the behavior of benign and malicious apps. The dataset was prepared from system call traces for both benign and malicious applications. Classic machine learning algorithms are used to classify apps according to their behavior~\cite{BhatiaK17}. Feng \etal propose EnDroid which is a dynamic analysis framework, with features extracted at runtime from system behavior traces and application-level malicious behaviors. EnDroid used the chi-square algorithm to identify dangerous dynamic behavior features~\cite{FengMSXM18}. 
+
+
+The dynamic approach involves running the malware in a controlled environment to observe the app's behavior, whether on the host or network-based level~\cite{MohaisenAM15}. Several terms were introduced by the litterateur, such as behavioral patterns, taint analysis, anomalies, dynamic permission, etc. These terms are considered dynamic only if the data is collected in run-time. For example, dynamic permission can be known from the app files without running it; in this case, this method did not consider dynamic.  
+
+Hu \etal study used system calls and network traffic to detect malware. The malware app dataset was collected from Contagio Mobile. A special algorithm was developed to detect the similarity between malware applications. Three malware categories were used to evaluate the proposed ShadowDroid tool: spyware, botware, and ransomware. ShadowDroid achieved an accuracy of 0.90~\cite{HuJC20}. Zhang \etal proposed framework involved two parts: the server, which has a model deployed to analyze system calls, and the client app, which was developed and installed on the Android device. The client app collects system calls and sends them to the server for analysis. Strace, Monkey Runner, and Android Studio emulator were used to design the framework. Then the system calls with natural language processing (NLP) techniques, TF-IDF and n-gram, for feature extraction. The apps were collected from the AMD dataset, and the framework achieved an accuracy of 0.99~\cite{ZhangMZRNJY22}. In~\cite{MahindruS17}, 123 dynamic permissions were extracted from 11000 Android apps from different available datasets. These features were used to evaluate five machine learning techniques. Feng \etal proposed EnDroid framework for dynamic malware detection, features were extracted from AndroZoo and Drebin datasets. DroidBox, Strace, and MonkeyRunner tools extracted system calls and other features. Then, nine machine learning algorithms were used to evaluate EndDroid, which achieved a rate accuracy of 0.983~\cite{FengMSXM18}. Guerra-Manzanare \etal introduced a comparative study that collected system call data from a real device and an emulated environment. The features were extracted from the system calls of both environments using ADB, Monkey-runner, Strace, Genymotion, and Android Studio. The study found significant differences in system call usage between real devices and emulators \cite{Guerra-ManzanaresV22} . In~\cite{BhatiaK17}, system calls were used to extract features from 50 malware and 50 benign applications during the application's runtime. Each application's frequency of system calls is considered the main set of features. Machine learning achieved an accuracy of 0.88 for classifying malware and benign applications. Casolare \etal proposed a method for Android malware detection. Dynamic analysis was used to extract the system call trace using ADB and Monkey-runner tools. These features of the system calls were used to create an image for each Android application. Therefore, the image generated from each application was used as input for the machine learning and deep learning classifiers. The detection model achieved 0.89. Most of the studies, as mentioned, used system calls as a data source to dynamically analyze the behavior of the app ~\cite{CasolareDIMMS21}.  
+
+Some of the studies adopted other sources to extract the dynamic features, whether used alone or merged with other features. A framework proposed by \cite{MahdavifarKFAG20} for classifying malware into five categories: banking, riskware, SMS, adware, and benign. In addition, a new dataset was generated for dynamic and static features named CICMalDroid 2020, which includes 17,341 sample apps. The dynamic features included system calls, binder calls, inter-process communication (IPC), and remote procedure calls (RPC). This dataset was used to evaluate the framework using deep learning and machine learning. The best accuracy achieved was 0.97. In~\cite{WitBH22}, machine learning was evaluated using external datasets created by another study. The dataset was collected by real users in 2016. The features were extracted based on the hardware level, including battery, CPU, network, memory, I/O interrupts, and storage. These features were used to detect Trojan malware and achieved an accuracy of 0.72~\cite{WitBH22}.
+ 
+Some studies have used static analysis to simulate dynamic behavior. Zhang~\etal used the static features of the API calls to simulate the behavior of malware apps. API calls and abstraction techniques extracted the features from the source code. Machine learning features were then used to detect malware~\cite{ZhangLZP19}. The same approach used by Onwuzurike \etal introduced the MaMaDroid system to detect Android malware. The system generates a Markov chain model based on API call sequences abstracted to a class, package, or family. The features were extracted using static analysis to simulate the behavior of malware. The output model is used well as input to machine learning classifiers~\cite{ OnwuzurikeMACRS19}. Furthermore, Shen \etal introduced a new technique for Android malware detection by analyzing complex data flows within applications. The core idea is to examine the structure and patterns of information flows within Android applications to identify malicious behavior based on the API call. The study used n-gram analysis to identify unique and common behavioral patterns present in complex flows. This n-gram analysis is performed on sequences of API calls that occur along the control flow paths of the complex flows. The authors evaluated their approach on 8,598 apps, consisting of recent and older generation benign and malware apps. They demonstrate the effectiveness of their technique in detecting malware in different generations of Android applications~\cite{ShenVMKZ19}.
+The summarizing and comparison of most of these studies are shown in tables \ref{tab:dynamicTable}, \ref{tab:dynamicTable2}
+
+\begin{sidewaystable}
+\begin{center}
+\caption{A comparison of a representative set of the literature work on Dynamic analysis approaches compared temporal across the utilized method, sample size, dataset name (wherever available), and the utilized features.}
+
+\scalebox{0.75}{
+\begin{tabular}{p{10em} p{2em} p{5em} p{10em} p{12em} p{25em}}
+\hline
+\textbf{Ref} &\textbf{Year} & \textbf{Method} & \textbf{Samples} & \textbf{Dataset} & \textbf{Features}  \\
+\hline
+
+Sihag \etal \cite{SihagSV020} & 2020 & Dynamic &  42 M, 260 B & NA M, Play store & log dumps fromlogcat \\
+\hline
+
+ Bhatia \etal \cite{BhatiaK17} & 2017& Dynamic & 50 M, 50 B & Genome, Play store & System calls \\ 
+ \hline
+Feng \etal\cite{FengMSXM18} & 2018  &  Dynamic  & (5213,5000) M,(5000,5000) B & AndroZoo, Drebin & System call.  \\ 
+ \hline
+ 
+Hu \etal \cite{HuJC20} & 2020 & Dynamic &130 M, 62 B & Contagio & Network packet, system call  \\
+ \hline 
+ Zhang \etal \cite{ZhangMZRNJY22} & 2022 & Dynamic &125  M,  300 B &AMD & System call \\
+\hline
+Mahindru \etal \cite{MahindruS17} & 2017 & dynmaic & 6971 M, 6029 B &appchina, hiapk, mumayi, gfan, pandaapp, slideme, Android Botne, Genome, DroidKin, AndroMalShare & Dynamic Permissions \\
+\hline
+Guerra \etal \cite{Guerra-ManzanaresV22} & 2022 & Dynamic & 8 M, 8 B &AndroidMalware 2020, CICAndMal2017 &  system calls \\
+\hline
+Casolare \etal \cite{CasolareDIMMS21} & 2021 & Dynamic &3355 M 3462 B & NA & System call. \\
+\hline
+
+ Mahdavifar \etal \cite{MahdavifarKFAG20} & 2020 & Dynamic & 17341 M, NA B & Proposed CICMalDroid2020 & System call, binder, IPC and RPC. \\
+\hline
+ Wit \etal \cite{WitBH22} & 2022 & Dynamic & NA & SherLock & Battery, CPU, network, memory, I/O interrupts and storage. \\ 
+\hline
+ Zhang \etal \cite{ZhangLZP19} & 2019 & Dynamic & (5.9K,5.6K) M, (20.5K,20.8K) B & AMD, Drebin & API calls \\
+\hline
+ Onwuzurike \etal \cite{OnwuzurikeMACRS19} & 2019 & Dynamic & Variety & AMD, VirusShare, PlayDrone  & API calls, Smali code, Methods name\\ 
+ \hline
+
+\end{tabular}}
+\label{tab:dynamicTable}
+
+\end{center}
+\end{sidewaystable}
+%\end{adjustbox}
+%\end{landscape}
+
+\begin{sidewaystable}
+\begin{center}
+\caption{A comparison of a representative set of the literature work on Dynamic analysis approaches compared detection methods, results, and limitations.}
+
+\scalebox{0.75}{
+\begin{tabular}{p{10em} p{8em} p{18em} p{30em}}
+\hline
+\textbf{Ref} & \textbf{Detection Method} & \textbf{Results}  & \textbf{Limitation}  \\ \hline
+
+Sihag~\cite{SihagSV020} & Statistical  & From 260 apps, 43 apps stole sensitive data, 2 apps fetched email data, 21 apps showed ads services, 10 apps tried to jailbreak the device and 8 tried to root & Not practical for real devices, such as enabling USB debugging. \\
+\hline
+
+Bhatia \etal~\cite{BhatiaK17}  &Statistical & Accuracy: 0.88 & Strace need a rooted device, which makes applying this method dangerous on a real device.  \\ 
+ \hline
+Feng \etal~\cite{FengMSXM18}  & ML &Accuracy: 0.96-0.98 & MonkeyRunner and DroidBox may ignore important triggers that indicate malicious behavior of malware due to MonkeyRunne triggers only the user interface (UI) \\
+ \hline
+Hu \etal~\cite{HuJC20} &ML & Accuracy:0.90   &   \\
+ \hline
+Zhang\etal~\cite{ZhangMZRNJY22} &Fuzzy AHP  & Accuracy: 0.993&  \\
+\hline
+Mahindru\etal~\cite{MahindruS17} &ML  &Accuracy:   &   \\
+\hline
+Guerra\etal~\cite{Guerra-ManzanaresV22}  & comparison & NA  &  Limit number of samples and number of events to collect data \\
+\hline
+Casolare \etal~\cite{CasolareDIMMS21}  &ML  & Accuracy: 0.89 & Low accuracy compared with a static method.\\
+\hline
+
+Mahdavifar \etal~\cite{MahdavifarKFAG20} & ML \& DL &Accuracy:0.978 & Dataset proposed included only five types of malware and 17341 samples.  \\
+\hline
+Wit \etal~\cite{WitBH22}  & ML  & Accuracy: 0.72 &  the data collected from 47 real devices, accuracy is low  \\
+\hline
+Zhang \etal~\cite{ZhangLZP19}  & ML &Accuracy: 0.96-0.98  & Depends on the method names based on the API call, which can change new and updated malware \\
+\hline
+Onwuzurike \etal~\cite{OnwuzurikeMACRS19} & ML & F1-score: 0.99 & Abstracted API call sequences as features, it does not consider other potentially relevant features \\
+\hline
+\end{tabular}}
+\label{tab:dynamicTable2}
+\end{center}
+\end{sidewaystable}
+
+
+\subsection{Hybrid Approach} \hfill\\
+
+Hybrid approaches use both dynamic and static features. The study~\cite{WangZH22} suggested a hybrid method for Android malware detection that combines static and dynamic techniques. Static analysis is used to compare the differing permission patterns of malicious and benign entities using a machine learning approach. The memory heap constructs a dynamic feature base by extracting the reference relationships between objects. The results on a real-world dataset of 21,708 applications show that the approach outperforms the well-known detector. Consequently,in the context of memory, Jang \etal introduced Andro-Dumpsys, a hybrid anti-malware system for Android malware detection. The core concept of this approach is the combination of malware-centric data with malware creator-centric data for analysis. Andro-Dumpsys employs volatile memory acquisition to extract features and behavioral characteristics from malware samples during execution. It analyzes both the malware itself (malware-centric) and attributes related to the malware creators, such as coding styles, techniques, and digital certificates (malware creator-centric). The system performs similarity matching between new malware samples and known malware samples, as well as similarity matching with the information of known malware creators. Combines the results of these two similarity detectors to make the final decision about whether a new sample is malware or not. The authors argue that incorporating malware creator information can improve malware detection and classification, as malware authors often reuse code, techniques, and patterns in different malware variants~\cite{JangKWMK16}.
+
+Other studies focused on specific types of Android malware such as Tidke \etal that introduced the Android Botnet app to detect malicious activities and prevent them from reaching user-sensitive data. The study evaluated its approach by five participants who added dummy information to their devices. Then spam messages were sent, which included a link to download a benign app called ``Help Click.'' After installation, the app captured bank details, contacts, and password details on the participant's devices. After installing the botnet detection app on these phones, the ``Help Click'' app was detected, and botnet detection found unsafe permissions granted for other installed applications~\cite{TidkeKT18}. 
+
+Hadiprakos \etal proposed a solution that uses the Drebin dataset to extract static features and the CICMalDroid dataset for dynamic analysis. These features were fed into machine learning and deep learning models to detect malware. Guerra-Manzanares \etal proposed a KronoDroid dataset that considered hybrid features of the Android malware dataset that included the time feature in the Android malware analysis. The dataset covered all years of Android history, from 2008 to 2020. The emulator dataset comprises 28,745 malicious applications from 209 malware families and 35,246 benign samples. The dataset for real devices included 41,382 malware samples belonging to 240 malware families and 36,755 benign applications. The dataset introduced in a structured format is the only one that provides timestamped information~\cite{Guerra-ManzanaresBN21}. Consequently, the CoDroid framework proposed in~\cite{ZhangXMZLT21} is a sequence‐based hybrid Android malware detection method that uses opcode as a static method to extract features and the system calls used in the dynamic method. The generation sequence is entered into a neural network model to classify the application as malware or benign.  Amer~\etal introduced a model to predict malicious smells. The features were extracted from static and dynamic datasets. The system and API calls were used with Word2Vec for dynamic methods to extract the similarity matrix for malware and benign apps. Then, for each matrix, the KNN was applied to cluster the matrix features. The final features were fed into the classifier model to predict malware, which achieved 0.97~\cite{AmerE22}. The summarizing and comparison of these articles are shown in tables~\ref{tab:Hybrd1} and \ref{tab:Hybrd2}.
+
+\begin{table}
+\begin{center}
+\caption{Various hybrid analysis approaches in the literature, focusing on the methods used, sample sizes, dataset names, and features utilized.}
+
+\scalebox{0.75}{
+\begin{tabular}{p{7.5em} p{2em} p{5em} p{8em} p{10em} p{10em}}
+\hline
+\textbf{Ref} &\textbf{Year} & \textbf{Method} & \textbf{Samples} & \textbf{Dataset} & \textbf{Features}  \\ \hline
+
+Wang \etal~\cite{WangZH22} & 2022 & Hybrid & 12364 M, 9344 B& NA & Permissions, memory heap. \\
+\hline
+
+Tidke \etal~\cite{TidkeKT18} & 2018& Hybrid & NA & One botnet & Permissions, Device data \\ 
+ \hline
+Guerra \etal~\cite{Guerra-ManzanaresBN21} & 2021  &  Hybrid & 41382 M, 36755 B & Drebin, VirusTotal, VirusShare, and AMD, F-droid, MARVIN, and APKMirror & Manifest file, Permissions.  \\ 
+ \hline
+ Zhang \etal~\cite{ZhangXMZLT21} & 2021 & Hybrid & 19K M, 11500 B & Androzoo, VirusShare, Drebin & Permissions  \\
+\hline
+Amer \etal \cite{AmerE22} & 2022 & Hybrid & variety & variety & System call, API call, permissions. \\
+\hline
+\end{tabular}}
+\label{tab:Hybrd1}
+\end{center}
+\end{table}
+%\end{adjustbox}
+%\end{landscape}
+
+\begin{table}[h]
+
+\begin{center}
+\caption{Hybrid approaches, results, and limitations.}
+
+\scalebox{0.75}{
+\begin{tabular}{p{7.5em} p{6em} p{8em} p{22em}}
+\hline
+\textbf{Ref} & \textbf{Detection Method} & \textbf{Results}  & \textbf{Limitation}  \\ \hline
+
+Wang \etal~\cite{WangZH22} & ML & F1-measure: 0.975 & Memory heap can be computationally expensive compared to analyzing \\
+\hline
+
+TidkeK \etal~\cite{TidkeKT18}  & ML & NA & Used one botnet and only five participants in the experiment. \\ 
+ \hline
+Guerra \etal~\cite{Guerra-ManzanaresBN21}  & New dataset &NA & -.  \\
+ \hline
+Zhang \etal~\cite{ZhangXMZLT21} &ML & Accuracy: 0.973 &   \\
+\hline
+
+Amer \etal~\cite{AmerE22} & ML & Accuracy: 0.97 & Depends on behavioral patterns, new malware with different behaviors might go undetected. \\
+\hline
+\end{tabular}}
+\label{tab:Hybrd2}
+\end{center}
+\end{table}
+
+\section{Android Malware Datasets}
+\label{SectionDatasets}
+
+Several datasets have been used in Android malware detection research, each offering a set of features and time frames for analysis. The KronoDroid dataset~\cite{Guerra-ManzanaresBN21}, spans from 2008 to 2020 and comprises 41,382 malware samples and 36,755 benign samples. This dataset embedded hybrid features with a timestamp. Another notable dataset, MalDroid2020~\cite{MahdavifarKFAG20}, published in 2020, focused solely on malware samples from 2017 to 2018, totaling 11,598 instances in 33 families. However, it lacks benign samples and timestamp features. AndMal2020~\cite{RahaliLKTGM20}, consists of 200,000 malware and benign samples without a specific time frame mentioned, featuring 191 families and only static features. In addition, the InvesAndMal2019~\cite{TaheriKL19} and AndMal2017~\cite{LashkariKTG18} datasets cover the periods 2015 to 2017, providing 426 malware samples and 5,065 benign samples. Both datasets used a hybrid approach but lacked timestamp features. The AAGM2017 dataset~\cite{LashkariKGMG17} includes 400 malware samples and 1,500 benign samples with dynamic features without timestamps. These datasets and others are shown in the table~\ref{tabDatasets}. These are commonly used publicly available datasets for research purposes~\cite{GuerraManzanares24}.
+
+\begin{table}[htbp]
+  \center
+\caption{Common used Android malware datasets}
+
+  \renewcommand{\arraystretch}{1.5}
+\linespread{0.9}
+\tiny 
+    \begin{tabular}{p{10em}p{2em}p{7em}p{3em}p{3em}p{5em}p{3em}p{5em}p{3em}}
+    \hline
+    \textbf{Ref} &  \textbf{Year} & DS Name &  \textbf{Malware} &  \textbf{Benign} &  \textbf{Time frame} &  \textbf{Families} &  \textbf{Features} &  \textbf{Tstamps} \\
+     \hline
+Guerra \etal ~\cite{Guerra-ManzanaresBN21}& 2021&
+KronoDroid & 41382 &36755& 2008–2020 &240& Hybrid & \ding{52}\\
+
+Mahdavifar \etal ~\cite{MahdavifarKFAG20}& 2020&MalDroid2020 &11598 &0& 2017–2018 &33& Hybrid & \ding{53}\\
+
+Rahali \etal ~\cite{RahaliLKTGM20}& 2020&AndMal2020 &200,000 &200,000& - &191& static & \ding{53}\\
+
+Taheri \etal ~\cite{TaheriKL19}& 2019& InvesAndMal2019 & 426 &5065& 2015–2017 &42& hybrid & \ding{53}\\
+
+Lashkari \etal ~\cite{LashkariKTG18}& 2018&AndMal2017 & 426 &5065& 2015–2017 &42& hybrid & \ding{53}\\
+
+Lashkari \etal ~\cite{LashkariKGMG17}& 2017& AAGM2017 &400 &1500& 2015–2016 &10& Dynamic & \ding{53}\\
+
+Wei \etal ~\cite{WeiLROZ17}& 2017&AMD &24553&0& 2010–2016 &71& APK & \ding{53}\\
+
+Kiss \etal ~\cite{KissLLT16}& 2016&Kharon &19 &0& 2011–2015 &19& Static & \ding{53}\\
+
+Kadir \etal ~\cite{KadirSG15}& 2015&AndroidBot &1929 &0& 2010–2014 &14& APK & \ding{53}\\
+
+Arp \etal ~\cite{ArpSHGR14}& 2014&Drebin & 5560 &123453& 2010–2012 &179& Static & \ding{53}\\
+
+Zhou \etal ~\cite{ZhouJ12}& 2012&MalGenome & 1260 &0& 2010–2011 &49& APK & \ding{53}\\
+   \hline
+    \end{tabular}
+    \label{tabDatasets}
+\end{table}%
+
+
+\section{Concept Drift in Malware}
+In supervised machine learning, a classifier is trained to predict a target variable using a labeled dataset in particular classification tasks. Within this model, concept drift refers to the change in the relationship between input data and the target variable over time~\cite{GamaZBPB14}. 
+Extensive research in the domain of Android malware detection has demonstrated the high effectiveness of machine learning techniques in identifying mobile malware. Furthermore, these studies highlight the importance of addressing concept drift in malware detection~\cite{HuMZLYL17}.
+
+
+\BfPara{Understanding and analysis of concept drift} Concept drift in the machine learning model may occur due to changes in the characteristics of malware, affecting the feature space or data space drift. Previous studies have investigated these two issues to understand the problem of concept drift based on the feature and data spaces~\cite{ChenZKYCPPCW23}. Guerra-Manzanares \etal conducted a comprehensive analysis of temporal data obtained from different timestamping approaches in malware and benign applications. An approximation method was developed to compare the accuracy of the obtained data, followed by the formulation of a concept drift handling method using a classifier pool. The results highlighted the significant impact of the selection of timestamping methods on detection accuracy, especially for long time frames. It confirmed the importance of relevant temporal values in the collection of datasets. However, the study did not focus on optimizing the performance of the concept drift handling method, comparing the performance of temporal data across feature sets~\cite{Guerra-ManzanaresB22a}, while Chow \etal addressed the challenge of decreasing performance in malware classifiers due to concept drift, where malware features evolve. The paper presented a framework for performing analyses of datasets affected by concept drift to understand the root causes of concept drift, which is crucial to developing robust detection methods. Additionally, the framework is evaluated by analyzing the Transcendent dataset widely used for Android malware detection. As a result, the analysis revealed two findings: first, the performance drop is primarily due to the emergence of two malware families. Second, the evolution of certain malware families and even benign samples significantly affects the performance of the classifier~\cite{ChowKLCAP23}. Furthermore, the study used drift forensics, a new area of post-hoc analysis of drifted data, by exploring the relationship between concept drift and malware family distribution. It used explainable AI methods, automatically identifying points of interest for further analysis, demonstrating the framework's effectiveness on a large mobile malware dataset, and making the code publicly available for future research~\cite{ChowKLCAP23}. However, the literature used a different approach to detect and mitigate concept drift in the context of malware that uses machine learning approaches. This work focuses on studies that investigated concept drift in Android malware. It worthy to mention here that the attackers may use adversarial attacks to deceive the model by changing on the features of malware to appear as a benign for machine learning model~\cite{AbusnainaWAWCM23}. which introduced by Abusnaina \etal evaluated the robustness of the malware detectors against white-box and black-box adversarial attacks, which can reduce the accuracy of the detectors by up to 0.70~\cite{AbusnainaAAAJNM22}. 
+ 
+\BfPara{\ding{172} Ensemble learning} 
+Ensemble learning involves the integration of multiple prediction models to improve predictive performance. It can boost performance beyond what a single model can achieve. Three common methods are used in ensemble learning, including bagging, stacking, and boosting. Each has its unique approach to combining classification models~\cite{FernG03}. Hu \etal introduced ensemble learning with feature selection and a sliding window technique to mitigate concept drift in Android malware detection. The Naive Bayes Classifier Based on Streaming Data (NBCS) was specifically designed to handle streaming data. This method created multiple sub-classifiers, each assigned with a random feature subset. Subsequently, these sub-classifiers select features from their subsets to build individual models. Furthermore, those with low accuracy are discarded by continuously monitoring each sub-classifier's performance through a sliding window. The remaining sub-classifiers are then updated with new data from the window to adapt with concept drift, which leads to maintaining the robustness of models over time~\cite{HuMZLYL17}. Although ensemble learning often performs well, it is predominantly treated as an offline model~\cite{FernG03}. This indicates that when new features emerge, the model requires retraining, which incurs costs based on the size of the dataset. \\
+
+\BfPara{\ding{173} Transfer learning}
+Transfer learning involves using knowledge from a pre-trained model trained on a large dataset of malware samples to improve the performance of a new target model, a potentially different dataset of malware samples. Transferring the parameters of the learned model to the new model to help train the new model~\cite{FuDG21}. 
+\citeauthor{GarciaDC23}  addressed the challenge of concept drift issue by using Transfer Learning (TL) techniques with specific hyperparameter configurations for malware detection. TL was used with an imbalanced dataset to identify new malware variants with a high detection rate effectively. Dynamic analysis using the cuckoo sandbox tool extracted 1135 features from APIs, signatures, and network features. The classification models used were KNN, MLP, RF, and Extreme Gradient Boosting (XGB). The performance of the model, evaluated in terms of average Matthews Correlation Coefficient (MCC), achieved an impressive 0.9775 with XGB \cite{GarciaDC23}.
+
+\citeauthor{FuDG21} used transfer learning techniques to fine-tune an LSTM pre-trained model on new malware samples. The author constructed and trained the LSTM-based model using original benign and malware samples analyzed through static and dynamic analysis methods. Subsequently, a generative adversarial network was developed to produce augmented instances that mimic the attributes of recently surfaced malware. Some layers of the LSTM network were retrained using augmented samples, which enabled it to detect new types of malware. The study used CuckooDroid to extract the static features that included permissions and the broadcast receiver, while the dynamic features involved system calls and registered broadcast receivers at runtime. The study result predicted that malware detection achieved a classification accuracy of 0.99 when tested in augmented samples and 0.865 with malware samples in real data \cite{FuDG21}. 
+
+
+ \hfill\\
+\BfPara{\ding{174} Continuous/Online Learning}
+ As online learning is used to solve concept drift, online models that can be dynamically updated are used. Still, they need labeled samples for updating, which can be insufficient and delayed \cite{GarciaD23}. Additionally, an imbalance in data further complicates model construction. Thus, \citeauthor{GarciaD23} suggested anomaly detection models for malware detection. Anomaly detection models, which require only benign samples for training, may be less affected by the lack of labeled malicious instances. The results indicated that the anomaly detection models outperform supervised online learning models in large data imbalances and scarcity of labels~\cite{GarciaD23}.
+
+
+conducted experiments to understand the impact of feature space drift and to compare it with data space drift on the decline of malware detection models over time.  
+ Their findings indicate that data-space drift primarily contributes to model declination, while feature-space drift has minimal impact. This observation was applied across various malware detectors, including Android and PE(portable executable), using different feature types and methods in various settings. The authors validate their findings using malware detection approaches based on online learning that incrementally update the feature space \cite{ChenZKYCPPCW23}. 
+
+The automated drift adaptation techniques proposed for malware detection include DroidEvolver \cite{XuLDCX19} and its updated version, DroidEvolver++ \cite{KanPPC21}. DroidEvolver develops its model pool with five linear online learning algorithms, including Passive Aggressive (PA), Online Gradient Descent (OGD), Adaptive Regularization of Weight Vectors (AROW), Regularized Dual Averaging (RDA), and Adaptive Forward-Backward Splitting (Ada-FOBOS). DroidEvolver aims to mitigate aging across models, ensuring robust malware detection despite shared initialization datasets. During detection, DroidEvolver used weighted voting among ``young'' models to classify applications based on the API call features. A Juvenilization Indicator (JI) is utilized to identify aging models, prompting updates to both feature sets and detection models when necessary \cite{XuLDCX19}. 
+The new version, DroidEvolver++, aimed to mitigate the rapid performance degradation caused by the poisoning of the model itself~\cite{KanPPC21}.
+
+\BfPara{\ding{175} Hierarchical contrastive learning}
+The work by  \citeauthor{ChenDW23}  found that after training an Android malware classifier on data for a year, the F1 score dropped from 0.99 to 0.76 within just 6 months of deployment in new test samples. The authors proposed new methods based on active learning. They select new samples for human analysts to label and then add these labeled samples to the training set to retrain the classifier. The main idea is to use similarity-based uncertainty, which the authors found to be more robust against concept drift than previous active learning approaches. The authors introduce a new hierarchical contrastive learning scheme and a sample selection technique to train the Android malware classifier~\cite{ChenDW23} continuously.
+
+\BfPara{\ding{176} Active learning} Active learning aims to optimize the performance of the machine learning model by carefully choosing a small subset of data samples for manual annotations to reduce the cost of labeling effectively, then using these annotated samples to retrain the model and adapt it to changing data distributions \cite{AlamFMR24}. Three standard methods for sample selection in active learning include uncertainty-based, diversity-based, and expected model change. The uncertainty-based approach identifies and evaluates uncertainties of new data points, prioritizing the annotation of the least confident ones. However, the diversity-based approach selects data points that better represent the overall distribution of unlabeled samples. Finally, the expected model change approach targets samples that are expected to have the most substantial impact on the current model parameters~\cite{AlamFMR24}. Alam \etal proposed a neural network model called MORPH to mitigate concept drift in malware detection using pseudo-labels. This approach reduces manual labeling efforts compared to traditional active learning techniques while improving performance in adapting to evolving malware landscapes~\cite{AlamFMR24}. MORPH, a self-learning approach, fights against concept drift in malware detection by continuously retraining a neural network model. Initially trained on labeled data, it leverages pseudo-labels generated from its predictions on unlabeled samples for monthly retraining. A key strength of MORPH lies in its sample selection algorithm, which selects information data points (labeled and pseudo-labeled) for retraining. This reduces the need for extensive manual labeling of new data compared to traditional active learning. Although active learning also aims to minimize the effort to label, human intervention is required to select the most informative data points from the unlabeled pool. MORPH automates this process through the pseudo-labels (self-learning) method, making it potentially more efficient for adapting to evolving malware. 
+
+\citeauthor{MolinaCoronadoMMM23} The study explored the effectiveness of retraining methods in maintaining the ability of malware detectors over time. It examined two aspects: the frequency of model retraining and the data used for retraining. The research compared periodic retraining with a concept drift detection method, triggering retraining only when necessary, and explores sampling methods like fixed-sized windows of recent data and active learning.  Their experiments indicated that the retraining approach successfully maintains the performance of existing malware detection models with static features and in an environment with concept drift \cite{MolinaCoronadoMMM23}.
+
+
+\BfPara{\ding{177} Other optimization approaches} Pendlebury \etal proposed TESSERACT statistical framework based on conformal prediction theory to detect aging malware detectors during deployment before their performance declines to an unacceptable level \cite{PendleburyPJKC19}. This framework extended a new version of in \cite{BarberoPPC22}. Both investigations employed a conformal evaluator, leveraging the concept of nonconformity to detect and exclude new instances that deviate from the training distribution and are likely to be incorrectly classified. The associated applications are subsequently isolated for additional examination and labeling.
+
+Some of the studies used dynamic features such as system call \cite{Guerra-ManzanaresLB22}. \citeauthor{Guerra-ManzanaresLB22} investigated concept drift using dynamic features system calls on imbalanced datasets. The study proposed a solution to handle concept drift, characterizing concept drift behavior, and evaluating timestamping approaches. The study used the KronoDroid dataset from 2008 to 2020 and analyzed concept drift over a continuous seven-year period \cite{Guerra-ManzanaresLB22}. Another reason that can introduce drift is the source of data collected from a real device or emulator. This problem was explored in the study \cite{Guerra-ManzanaresLB22b}. The study investigated the impact of data sources by comparing models generated from actual device and emulator data sets. In addition, it examines the effect of different timestamping options on detection performance and characterizes concept drift using a global interpretability method. The study used the KronoDroid dataset and focused on evaluating the impact of data sources and timestamps on model performance rather than optimizing detection performance.  Furthermore, it analyzed the impact of data source variation and timestamp alternatives on continuous mobile malware detection and compared learning models generated from the emulator and real device data sets for system calls \cite{Guerra-ManzanaresLB22b}. \citeauthor{RochaDCDJ23} depends on the semantics of the assembly code and proposed Asm2Vec. This technique learns vector representations from the assembly code as a potential method to prevent concept drift in malware classification. Asm2Vec can capture semantic similarities in assembly instructions to mitigate drift. The study compared machine learning models trained with features extracted using Asm2Vec embeddings. The results demonstrated that models using Asm2Vec features achieved lower performance. This indicates that Asm2Vec might not effectively capture the evolving features of malware, especially in light of adversarial changes. This finding highlights the need for further investigation into alternative methods that can more effectively address concept drift in malware classification \cite{RochaDCDJ23}.
+
+\citeauthor{MailletM23} proposed methods to optimize neural network models for malware detection. Machine learning models for malware detection are susceptible to performance decay over time due to concept drift, where the character of malware keeps evolving. The authors propose a model-agnostic protocol that can be applied to various neural network architectures. A model-agnostic protocol refers to a set of methods that can be used for different machine learning models, regardless of their architecture. This means that the protocol does not require modifying the core neural network architecture itself and offers general methods such as feature reduction and most recent data for validation during training that were used in the study instead of randomization \cite{MailletM23}. Additionally, they introduced a new loss function, Drift-Resilient Binary Cross-Entropy, designed to be more effective against concept drift. Their research demonstrates that the enhanced model outperformed a baseline model in identifying new malware instances \cite{MailletM23}. These studies result and limitation are shown in tables \ref{tab:conceptDrift}
+
+
+\begin{landscape}
+\begin{table}[H]
+\caption{A comparison of a related set of the
+literature work on concept drift in Android malware, compared
+temporal across the used method, problem, features
+result and limitation. (*: Not related to Android directly)}
+
+\renewcommand{\arraystretch}{1.5}
+\linespread{0.8}
+\tiny 
+\begin{tabular}{p{9em} p{2em} p{10em} p{10em} p{10em} p{20em} p{20em}}
+\hline
+\textbf{Ref} & \textbf{Year} & \textbf{Method} & \textbf{Problem} & \textbf{Features} & \textbf{Result} & \textbf{Limitation}  \\
+\hline
+Hu \etal~\cite{HuMZLYL17} & 2017& Ensemble learning  & Feature selection and sliding window & Permissions, Action, API call & Naive Bayes (NB) outperformed both the baseline Hoeffding Tree (HT) and the Hoeffding Option Tree (HOT), achieving an accuracy of 0.95 &  The dataset utilized includes various datasets from undefined and discontinued time frames.
+
+\\
+\hline
+% Feature-Space vs. Data-Space Drift.
+Xu \etal~\cite{XuLDCX19}  & 2019 & Online learning & Identify aging models &Static, API call & Achieved F-measure 0.95 &
+Models may struggle with high-dimensional and nonlinear malware data distribution. Models degrade rapidly as a result of self-poisoning  \\ 
+ \hline
+
+ Pendlebury \etal~\cite{PendleburyPJKC19} & 2019 & Optimization  &Spatial and temporal bias & & A new set of constraints  to eliminate this bias and a new metric to measure classifiers & \\ 
+ \hline
+
+ Kan \etal~\cite{KanPPC21} & 2021 & Online learning &  Poisoning model &   Static,API call  &Suggests prioritizing high-quality pseudo-labels for model updates & limitation in dataset and features  \\ 
+ \hline
+
+Guerra \etal~\cite{Guerra-ManzanaresB22a} & 2022 & Understanding & Resilient models & NA & last modification and first-seen timestamp are the best options for creating enduring ML models for Android malware detection.  &  Did not focus on
+optimizing the performance of the concept drift handling.  \\ 
+ \hline
+
+
+ Barbero \etal~\cite{BarberoPPC22} & 2022 & Optimization  & Rejection framework &NA & guidance on optimal settings for using transcendent framework &  Flagging uncertain samples instead of making a definitive classification. \\ 
+ \hline
+
+Guerra \etal~\cite{Guerra-ManzanaresLB22} & 2022 &Optimization  &Imbalanced data  & Dynamic, system calls & F-score accuracy0.95 & Focused only system calls as a feature for detection, which is sensitive to change for the same app in a different run. \\ 
+ \hline
+
+Guerra \etal~\cite{Guerra-ManzanaresLB22b} & 2022 &  & & Dynamic, system calls & Source of data (emulator vs real device) can significantly impact the concept drift patterns & Did not consider features that do not affect when run in different devices such as static features. \\ 
+ \hline
+
+Chow \etal~\cite{ChowKLCAP23} & 2023 & Understanding & Factors cause the drift & NA& Performance declined to the emergence of only two malware families. ML model affected by new benign samples & Used a single dataset and only five families.  \\ 
+ \hline
+
+Rocha \etal~\cite{RochaDCDJ23} & 2023 &Optimization & Embeddings to solve data drift&  Static,NA &Asm2Vec does not reduce drift effects & - \\ 
+ \hline
+Garcia \etal~\cite{GarciaD23} & 2023 * & Online Learning &Use anomaly detection & - & Anomaly detection outperform supervised online.& - \\ 
+ \hline
+
+Maillet \etal~\cite{MailletM23} & 2023 * & Optimization &Feature reduction, loss function improvement, & - & detecting 15.2\% more malware than a baseline model. & - \\ 
+ \hline
+
+Molina \etal\cite{MolinaCoronadoMMM23} & 2023 & Active Learning & Minimizing the cost of retraining supervised models. & All in external datasets  & Average performance improvement of 0.20 compared to the original versions of the classifiers. & Need for real-world validation and potential computational costs. \\ 
+ \hline
+
+Chen \etal~\cite{ChenDW23} & 2023 & Contrastive learning &Real time updates & All in external datasets  & Reduces the false negative rate from 0.14 to 0.9, and false positive rate from 0.86 to 0.48 & 
+Need for real-world validation and potential computational costs.\\
+ \hline
+
+Alam \etal~\cite{AlamFMR24} & 2024* & Active learning & Reduces manual labeling efforts when combined with active
+learning & -  &  enhances previous approaches in automatic concept drift adaptation for detecting malware. & Applying in Windows malware not Android  \\ 
+ \hline
+
+\end{tabular}
+\label{tab:conceptDrift}
+\end{table}
+\end{landscape}
+
+\subsection{Summary and Research Gaps}
+Based on the literature, there are three main approaches used to analyze and detect Android malware: static analysis, dynamic analysis, and hybrid analysis. Regardless of the type of feature used (static, dynamic, or a combination), most studies incorporating machine learning approaches have achieved good accuracy up to 0.99. Each approach has its own strength and weakness, as described in the literature.
+
+The main gap that has been ignored in these approaches is the concept drift. Consequently, the researcher investigates this problem in the context of Android malware detection. Although the effectiveness of the proposed solutions is high, they face several significant limitations. One major issue is the quality and consistency of the datasets used in different studies. For example, Hu \etal used various datasets from undefined or discontinued time frames, leading to a lack of consistency that affects the reliability of their results~\cite{HuMZLYL17}. Additionally, the dependence on specific features, such as system calls or API calls, limits the generalizability of models. Guerra \etal focused only on system calls, which are sensitive to changes for the same app in different runs, possibly decreasing the robustness of their model \cite{Guerra-ManzanaresLB22}. Models also struggle with high-dimensional and nonlinear malware data distributions, as highlighted by~\cite{XuLDCX19}. Xu \etal~\cite{XuLDCX19} noted that model performance was massively degraded due to self-poisoning. Furthermore, the effectiveness of models is commonly measured using metrics that may not fully capture the complexities of malware detection, such as imbalanced datasets. 
+
+Last but not least, studies like those by Molina \etal and Chen \etal who emphasized the need for real-world validation to ensure the applicability and efficiency of their findings, show that there is a significant gap in real-world validation of proposed methods~\cite{MolinaCoronadoMMM23, ChenDW23}. In addition, there is a notable lack of focus on optimizing the performance of concept drift handling. Guerra \etal identified resilience model features but did not explore methods to overcome concept drift challenges, such as including static features and forgetting models \cite{Guerra-ManzanaresLB22b}. There is also a demand for a comprehensive analysis of both static and dynamic features. The theme of existing studies focuses mainly on static or dynamic features only, as proposed in studies by Guerra \etal~\cite{Guerra-ManzanaresLB22} and Kan \etal~\cite{KanPPC21}. 
+
+On the other hand, active learning and anomaly detection have shown promise, but these methods need a more comprehensive evaluation across different datasets with different timestamps. Lastly, there is a gap in understanding and mitigating model forgetting during retraining models. Therefore, effective strategies are needed to retain the model from previous data while adapting to new data, as continuous learning techniques suggest. Addressing these issues will help develop a more reliable and effective malware detection model. 
+
+We noted that most research on malware detection focuses on binary classification. This approach misses the complexities involved in identifying and classifying specific malware families. There is a significant gap in addressing how different malware families evolve and how concept drift affects their detection. Furthermore, existing models often cannot adapt to new and emerging malware families in real-time. Additionally, there is an insufficient exploration of multiclassification methods that could improve the detail and accuracy of malware detection by identifying specific families rather than just malware or benign.
+
